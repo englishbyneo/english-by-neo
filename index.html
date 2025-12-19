@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English by Neo - Master English Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-orange: #ff6b35;
+            --accent-green: #34a853;
+            --accent-purple: #9c27b0;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e7f1 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: var(--light-blue);
+        }
+
+        /* Header with Logo - Top Left */
+        .header-main {
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-decoration: none;
+        }
+
+        .logo-3d-container {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 8px 20px rgba(26, 115, 232, 0.3));
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 36px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-3d-container:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .logo-text span {
+            color: var(--primary-blue);
+            position: relative;
+        }
+
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+        }
+
+        /* Navigation Menu */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-link {
+            padding: 10px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(26, 115, 232, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.05) 0%, rgba(66, 133, 244, 0.05) 100%);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            line-height: 1.1;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-blue);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, transparent, rgba(26, 115, 232, 0.2), transparent);
+            z-index: -1;
+            border-radius: 6px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin-bottom: 40px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: var(--text-light);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 15px 30px rgba(26, 115, 232, 0.4);
+            transition: all 0.4s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(26, 115, 232, 0.5);
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--primary-blue);
+        }
+
+        .category-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .category-card p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.6;
+            min-height: 80px;
+        }
+
+        .card-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .card-btn:hover {
+            background: transparent;
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 80px 0;
+            margin: 100px 0;
+            border-radius: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 30px;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer-main {
+            background: linear-gradient(135deg, var(--text-dark), #000);
+            color: var(--white);
+            padding: 60px 0 40px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--secondary-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .language-switcher {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .main-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .category-card {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                padding: 5px;
+            }
+            
+            .lang-btn {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Persian Language Support */
+        body[dir="rtl"] {
+            text-align: right;
+        }
+
+        body[dir="rtl"] .logo-wrapper {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .stats-grid {
+            direction: rtl;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="fa">فارسی</button>
+    </div>
+
+    <!-- Header with Logo - Top Left -->
+    <header class="header-main">
+        <div class="header-container">
+            <a href="index.html" class="logo-wrapper">
+                <div class="logo-3d-container">EN</div>
+                <div class="logo-text">English by <span>Neo</span></div>
+            </a>
+            
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active" data-page="home">Home</a>
+                <a href="grammar.html" class="nav-link" data-page="grammar">Grammar</a>
+                <a href="vocabulary.html" class="nav-link" data-page="vocabulary">Vocabulary</a>
+                <a href="pronunciation.html" class="nav-link" data-page="pronunciation">Pronunciation</a>
+                <a href="voice-check.html" class="nav-link" data-page="voiceCheck">Voice Check</a>
+                <a href="placement-tests.html" class="nav-link" data-page="placementTests">Placement Tests</a>
+                <a href="ielts.html" class="nav-link" data-page="ielts">IELTS</a>
+                <a href="toefl.html" class="nav-link" data-page="toefl">TOEFL</a>
+                <a href="conversation.html" class="nav-link" data-page="conversation">Conversation</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1><span class="highlight">Transform Your English</span> From Beginner to Fluent Speaker</h1>
+            <p class="hero-subtitle">Join 50,000+ Successful Learners Who Mastered English with Neo</p>
+            <p>Discover the most engaging, effective, and personalized English learning platform. Our AI-powered system adapts to your level, goals, and learning style to deliver results 3x faster than traditional methods.</p>
+            <a href="#categories" class="cta-button">
+                <i class="fas fa-rocket"></i> Start Your Journey Free Today
+            </a>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section" id="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Complete English Learning Ecosystem</h2>
+                <p>Choose your path to fluency with our comprehensive skill-building modules</p>
+            </div>
+            
+            <div class="categories-grid">
+                <!-- Grammar Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Grammar Mastery</h3>
+                    <p>Interactive lessons, real-time correction, and comprehensive exercises to perfect your grammar.</p>
+                    <a href="grammar.html" class="card-btn">Start Grammar</a>
+                </div>
+                
+                <!-- Vocabulary Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Vocabulary Builder</h3>
+                    <p>Learn 10+ new words daily with spaced repetition, context sentences, and memory games.</p>
+                    <a href="vocabulary.html" class="card-btn">Expand Vocabulary</a>
+                </div>
+                
+                <!-- Pronunciation Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3>Pronunciation Lab</h3>
+                    <p>Advanced speech recognition analyzes and corrects your pronunciation in real-time.</p>
+                    <a href="pronunciation.html" class="card-btn">Practice Speaking</a>
+                </div>
+                
+                <!-- Voice Check Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>AI Voice Check</h3>
+                    <p>Get instant feedback on fluency, accent, and intonation from our AI English coach.</p>
+                    <a href="voice-check.html" class="card-btn">Check Voice</a>
+                </div>
+                
+                <!-- Placement Test Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>Smart Placement Test</h3>
+                    <p>5-minute adaptive test that accurately determines your level and creates a custom study plan.</p>
+                    <a href="placement-tests.html" class="card-btn">Take Test</a>
+                </div>
+                
+                <!-- IELTS Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>IELTS Success Path</h3>
+                    <p>Complete preparation with mock tests, speaking simulations, and band score predictors.</p>
+                    <a href="ielts.html" class="card-btn">Start IELTS Prep</a>
+                </div>
+                
+                <!-- TOEFL Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>TOEFL Excellence</h3>
+                    <p>Targeted strategies and practice for all four sections to maximize your TOEFL score.</p>
+                    <a href="toefl.html" class="card-btn">Prepare for TOEFL</a>
+                </div>
+                
+                <!-- Conversation Card -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Live Conversation</h3>
+                    <p>Practice with AI partners or join group conversations with learners worldwide.</p>
+                    <a href="conversation.html" class="card-btn">Start Conversation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="50000">50,000+</span>
+                    <span class="stat-text">Active Learners</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="98">98%</span>
+                    <span class="stat-text">Success Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="1500">1,500+</span>
+                    <span class="stat-text">Learning Hours</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="24">24/7</span>
+                    <span class="stat-text">Support Available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo-text" style="color: white; margin-bottom: 20px;">English by <span>Neo</span></div>
+                    <p class="footer-description">Your journey to English fluency starts here. Join our community of successful learners today!</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-links-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="placement-tests.html">Placement Test</a></li>
+                        <li><a href="voice-check.html">Voice Analysis</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-categories-title">Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="grammar.html">Grammar</a></li>
+                        <li><a href="vocabulary.html">Vocabulary</a></li>
+                        <li><a href="pronunciation.html">Pronunciation</a></li>
+                        <li><a href="ielts.html">IELTS Preparation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-contact-title">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:support@englishbyneo.com">support@englishbyneo.com</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p class="copyright-text">© 2023 English by Neo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language Management
+        const translations = {
+            en: {
+                // Hero Section
+                heroTitle: "Transform Your English From Beginner to Fluent Speaker",
+                heroSubtitle: "Join 50,000+ Successful Learners Who Mastered English with Neo",
+                heroDescription: "Discover the most engaging, effective, and personalized English learning platform. Our AI-powered system adapts to your level, goals, and learning style to deliver results 3x faster than traditional methods.",
+                heroCTA: "Start Your Journey Free Today",
+                
+                // Categories Section
+                sectionTitle: "Your Complete English Learning Ecosystem",
+                sectionSubtitle: "Choose your path to fluency with our comprehensive skill-building modules",
+                
+                // Category Cards
+                grammar: {
+                    title: "Grammar Mastery",
+                    description: "Interactive lessons, real-time correction, and comprehensive exercises to perfect your grammar.",
+                    button: "Start Grammar"
+                },
+                vocabulary: {
+                    title: "Vocabulary Builder",
+                    description: "Learn 10+ new words daily with spaced repetition, context sentences, and memory games.",
+                    button: "Expand Vocabulary"
+                },
+                pronunciation: {
+                    title: "Pronunciation Lab",
+                    description: "Advanced speech recognition analyzes and corrects your pronunciation in real-time.",
+                    button: "Practice Speaking"
+                },
+                voiceCheck: {
+                    title: "AI Voice Check",
+                    description: "Get instant feedback on fluency, accent, and intonation from our AI English coach.",
+                    button: "Check Voice"
+                },
+                placementTests: {
+                    title: "Smart Placement Test",
+                    description: "5-minute adaptive test that accurately determines your level and creates a custom study plan.",
+                    button: "Take Test"
+                },
+                ielts: {
+                    title: "IELTS Success Path",
+                    description: "Complete preparation with mock tests, speaking simulations, and band score predictors.",
+                    button: "Start IELTS Prep"
+                },
+                toefl: {
+                    title: "TOEFL Excellence",
+                    description: "Targeted strategies and practice for all four sections to maximize your TOEFL score.",
+                    button: "Prepare for TOEFL"
+                },
+                conversation: {
+                    title: "Live Conversation",
+                    description: "Practice with AI partners or join group conversations with learners worldwide.",
+                    button: "Start Conversation"
+                },
+                
+                // Stats
+                activeLearners: "Active Learners",
+                successRate: "Success Rate",
+                learningHours: "Learning Hours",
+                supportAvailable: "Support Available",
+                
+                // Footer
+                footerDescription: "Your journey to English fluency starts here. Join our community of successful learners today!",
+                quickLinks: "Quick Links",
+                categories: "Categories",
+                contact: "Contact Us",
+                copyright: "© 2023 English by Neo. All rights reserved.",
+                
+                // Navigation
+                nav: {
+                    home: "Home",
+                    grammar: "Grammar",
+                    vocabulary: "Vocabulary",
+                    pronunciation: "Pronunciation",
+                    voiceCheck: "Voice Check",
+                    placementTests: "Placement Tests",
+                    ielts: "IELTS",
+                    toefl: "TOEFL",
+                    conversation: "Conversation"
+                }
+            },
+            fa: {
+                // Hero Section
+                heroTitle: "انگلیسی خود را از مبتدی به سخنران مسلط تبدیل کنید",
+                heroSubtitle: "به ۵۰,۰۰۰+ زبان آموز موفق بپیوندید که انگلیسی را با نئو یاد گرفتند",
+                heroDescription: "جذاب ترین، موثرترین و شخصی ترین پلتفرم یادگیری انگلیسی را کشف کنید. سیستم هوشمند ما با سطح، اهداف و سبک یادگیری شما سازگار می‌شود تا نتایج را ۳ برابر سریع‌تر از روش‌های سنتی ارائه دهد.",
+                heroCTA: "سفر خود را امروز رایگان شروع کنید",
+                
+                // Categories Section
+                sectionTitle: "اکوسیستم کامل یادگیری انگلیسی شما",
+                sectionSubtitle: "مسیر خود را به سمت تسلط با ماژول‌های جامع مهارت‌سازی انتخاب کنید",
+                
+                // Category Cards
+                grammar: {
+                    title: "تسلط بر گرامر",
+                    description: "درس‌های تعاملی، تصحیح بلادرنگ و تمرین‌های جامع برای تکمیل گرامر شما.",
+                    button: "شروع گرامر"
+                },
+                vocabulary: {
+                    title: "سازنده واژگان",
+                    description: "هر روز ۱۰+ کلمه جدید با تکرار با فاصله، جملات زمینه‌ای و بازی‌های حافظه یاد بگیرید.",
+                    button: "گسترش واژگان"
+                },
+                pronunciation: {
+                    title: "آزمایشگاه تلفظ",
+                    description: "تشخیص گفتار پیشرفته تلفظ شما را در زمان واقعی تحلیل و اصلاح می‌کند.",
+                    button: "تمرین صحبت کردن"
+                },
+                voiceCheck: {
+                    title: "بررسی صدای هوش مصنوعی",
+                    description: "بازخورد فوری در مورد روانی، لهجه و آهنگ صدا از مربی انگلیسی هوش مصنوعی ما دریافت کنید.",
+                    button: "بررسی صدا"
+                },
+                placementTests: {
+                    title: "آزمون تعیین سطح هوشمند",
+                    description: "آزمون تطبیقی ۵ دقیقه‌ای که سطح شما را به دقت تعیین می‌کند و یک برنامه مطالعه سفارشی ایجاد می‌کند.",
+                    button: "شرکت در آزمون"
+                },
+                ielts: {
+                    title: "مسیر موفقیت آیلتس",
+                    description: "آمادگی کامل با آزمون‌های آزمایشی، شبیه‌سازی Speaking و پیش‌بینی‌کننده‌های نمره.",
+                    button: "شروع آمادگی آیلتس"
+                },
+                toefl: {
+                    title: "توفل عالی",
+                    description: "استراتژی‌ها و تمرین‌های هدفمند برای هر چهار بخش برای به حداکثر رساندن نمره تافل شما.",
+                    button: "آماده‌سازی برای تافل"
+                },
+                conversation: {
+                    title: "مکالمه زنده",
+                    description: "با شرکای هوش مصنوعی تمرین کنید یا به مکالمات گروهی با زبان آموزان در سراسر جهان بپیوندید.",
+                    button: "شروع مکالمه"
+                },
+                
+                // Stats
+                activeLearners: "زبان آموزان فعال",
+                successRate: "نرخ موفقیت",
+                learningHours: "ساعت یادگیری",
+                supportAvailable: "پشتیبانی موجود",
+                
+                // Footer
+                footerDescription: "سفر شما به تسلط انگلیسی از اینجا شروع می‌شود. امروز به جامعه زبان آموزان موفق ما بپیوندید!",
+                quickLinks: "لینک‌های سریع",
+                categories: "دسته‌بندی‌ها",
+                contact: "تماس با ما",
+                copyright: "© ۲۰۲۳ انگلیسی با نئو. کلیه حقوق محفوظ است.",
+                
+                // Navigation
+                nav: {
+                    home: "خانه",
+                    grammar: "گرامر",
+                    vocabulary: "واژگان",
+                    pronunciation: "تلفظ",
+                    voiceCheck: "بررسی صدا",
+                    placementTests: "آزمون تعیین سطح",
+                    ielts: "آیلتس",
+                    toefl: "تافل",
+                    conversation: "مکالمه"
+                }
+            }
+        };
+
+        // Initialize with English
+        let currentLang = 'en';
+        
+        // Setup language switcher
+        function setupLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    switchLanguage(lang);
+                });
+            });
+        }
+
+        // Switch language function
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.body.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Update all content
+            updateContent(lang);
+        }
+
+        // Update all page content
+        function updateContent(lang) {
+            const t = translations[lang];
+            
+            // Update hero section
+            document.querySelector('.hero h1 .highlight').textContent = t.heroTitle.split(' ')[0];
+            document.querySelector('.hero-subtitle').textContent = t.heroSubtitle;
+            document.querySelector('.hero p').textContent = t.heroDescription;
+            document.querySelector('.cta-button').innerHTML = `<i class="fas fa-rocket"></i> ${t.heroCTA}`;
+            
+            // Update section titles
+            document.querySelector('.section-title h2').textContent = t.sectionTitle;
+            document.querySelector('.section-title p').textContent = t.sectionSubtitle;
+            
+            // Update category cards
+            const categories = ['grammar', 'vocabulary', 'pronunciation', 'voiceCheck', 'placementTests', 'ielts', 'toefl', 'conversation'];
+            categories.forEach((cat, index) => {
+                const card = document.querySelectorAll('.category-card')[index];
+                if (card) {
+                    card.querySelector('h3').textContent = t[cat].title;
+                    card.querySelector('p').textContent = t[cat].description;
+                    card.querySelector('.card-btn').textContent = t[cat].button;
+                }
+            });
+            
+            // Update stats
+            document.querySelectorAll('.stat-text').forEach((stat, index) => {
+                const texts = [t.activeLearners, t.successRate, t.learningHours, t.supportAvailable];
+                if (texts[index]) stat.textContent = texts[index];
+            });
+            
+            // Update footer
+            document.querySelector('.footer-description').textContent = t.footerDescription;
+            document.querySelector('.footer-links-title').textContent = t.quickLinks;
+            document.querySelector('.footer-categories-title').textContent = t.categories;
+            document.querySelector('.footer-contact-title').textContent = t.contact;
+            document.querySelector('.copyright-text').textContent = t.copyright;
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const page = link.dataset.page;
+                if (page && t.nav[page]) {
+                    link.textContent = t.nav[page];
+                }
+            });
+            
+            // Update logo text for Persian
+            const logoText = document.querySelector('.logo-text');
+            if (lang === 'fa') {
+                logoText.innerHTML = 'انگلیسی با <span>نئو</span>';
+            } else {
+                logoText.innerHTML = 'English by <span>Neo</span>';
+            }
+        }
+
+        // Animate stats numbers
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = parseInt(stat.dataset.count);
+                const current = parseInt(stat.textContent.replace(/,/g, ''));
+                
+                if (!isNaN(target) && target !== current) {
+                    let start = 0;
+                    const duration = 2000;
+                    const increment = target / (duration / 16);
+                    
+                    const timer = setInterval(() => {
+                        start += increment;
+                        if (start >= target) {
+                            stat.textContent = target.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(start).toLocaleString();
+                        }
+                    }, 16);
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(href);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 100,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setupLanguageSwitcher();
+            setupSmoothScroll();
+            
+            // Animate stats when they come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            const statsSection = document.querySelector('.stats-section');
+            if (statsSection) observer.observe(statsSection);
+            
+            // Add hover effects to cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-15px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
