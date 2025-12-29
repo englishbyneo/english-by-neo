@@ -4,29 +4,2473 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary Builder - English by Neo</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-orange: #ff6b35;
+            --accent-green: #34a853;
+            --accent-purple: #9c27b0;
+            --accent-gold: #ffc107;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e7f1 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: var(--light-blue);
+        }
+
+        /* Header */
+        .header-main {
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-decoration: none;
+        }
+
+        .logo-3d-container {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 8px 20px rgba(26, 115, 232, 0.3));
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 36px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .logo-text span {
+            color: var(--primary-blue);
+            position: relative;
+        }
+
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-link {
+            padding: 10px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .nav-link.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+
+        /* Level Selection */
+        .level-selection {
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+
+        .level-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .level-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            text-align: center;
+            border: 3px solid transparent;
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .level-card.basic {
+            border-color: var(--accent-green);
+        }
+
+        .level-card.intermediate {
+            border-color: var(--accent-orange);
+        }
+
+        .level-card.advanced {
+            border-color: var(--accent-purple);
+        }
+
+        .level-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .basic .level-icon {
+            background: var(--accent-green);
+        }
+
+        .intermediate .level-icon {
+            background: var(--accent-orange);
+        }
+
+        .advanced .level-icon {
+            background: var(--accent-purple);
+        }
+
+        .level-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .level-features {
+            list-style: none;
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .level-features li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .level-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        .level-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-blue);
+        }
+
+        .level-btn:hover {
+            background: transparent;
+            color: var(--primary-blue);
+        }
+
+        /* Learning Methods */
+        .methods-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 25px;
+            margin: 40px 0;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .method-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 28px;
+        }
+
+        /* Lesson Content */
+        .lesson-content {
+            display: none;
+            padding: 60px 0;
+        }
+
+        .lesson-content.active {
+            display: block;
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        .back-to-levels {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-levels:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Vocabulary Grid */
+        .vocabulary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .vocabulary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .vocabulary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--primary-blue);
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .word-main {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .word-type {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .phonetic {
+            color: var(--text-light);
+            font-style: italic;
+            margin: 5px 0 15px 0;
+        }
+
+        .meaning {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .example {
+            background: var(--light-blue);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .synonyms, .antonyms {
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .synonyms span, .antonyms span {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .listen-btn {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .save-btn {
+            background: var(--accent-gold);
+            color: var(--text-dark);
+        }
+
+        .practice-btn {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Word Lists */
+        .word-lists {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .word-list-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .word-list-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .word-count {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .word-items {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .word-items li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .word-items li:last-child {
+            border-bottom: none;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            background: var(--light-blue);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Practice Games */
+        .games-section {
+            padding: 60px 0;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .quiz-section.active {
+            display: block;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .quiz-type {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .quiz-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .quiz-option {
+            padding: 20px;
+            background: var(--light-blue);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-option:hover {
+            background: #dbeafe;
+        }
+
+        .quiz-option.selected {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .quiz-option.correct {
+            background: var(--accent-green);
+            color: white;
+            border-color: var(--accent-green);
+        }
+
+        .quiz-option.wrong {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option-number {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .quiz-feedback {
+            display: none;
+            padding: 20px;
+            background: var(--light-blue);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .quiz-feedback.active {
+            display: block;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .quiz-btn {
+            padding: 12px 30px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Review System */
+        .review-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 60px;
+            border-radius: 25px;
+            margin: 60px 0;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer */
+        .footer-main {
+            background: linear-gradient(135deg, var(--text-dark), #000);
+            color: var(--white);
+            padding: 60px 0 40px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--secondary-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .level-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .vocabulary-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .level-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .word-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Persian Support */
+        body[dir="rtl"] {
+            text-align: right;
+        }
+
+        body[dir="rtl"] .logo-wrapper {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .level-features li {
+            padding-left: 0;
+            padding-right: 25px;
+        }
+
+        body[dir="rtl"] .level-features li::before {
+            left: auto;
+            right: 0;
+        }
+
+        body[dir="rtl"] .word-header {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .quiz-option {
+            flex-direction: row-reverse;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-blue);
+        }
+
+        /* Highlight Animation */
+        .highlight-word {
+            animation: pulse 2s infinite;
+            background: linear-gradient(120deg, #ffc10744 0%, #ffc10744 100%);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--primary-blue);
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--text-dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
 </head>
 <body data-page="vocabulary">
-    <!-- Same structure as grammar.html but with vocabulary-specific content -->
-    
-    <!-- Update the category hero section -->
-    <section class="category-hero">
-        <div class="header-container">
-            <div class="category-icon-large">
-                <i class="fas fa-book"></i>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="fa">فارسی</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header-main">
+        <div class="container">
+            <div class="header-container">
+                <a href="index.html" class="logo-wrapper">
+                    <div class="logo-3d-container">EN</div>
+                    <div class="logo-text">English by <span>Neo</span></div>
+                </a>
+                
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="grammar.html" class="nav-link">Grammar</a>
+                    <a href="vocabulary.html" class="nav-link active">Vocabulary</a>
+                    <a href="pronunciation.html" class="nav-link">Pronunciation</a>
+                    <a href="voice-check.html" class="nav-link">Voice Check</a>
+                    <a href="placement-tests.html" class="nav-link">Placement Tests</a>
+                    <a href="ielts.html" class="nav-link">IELTS</a>
+                    <a href="toefl.html" class="nav-link">TOEFL</a>
+                </nav>
             </div>
-            <h1 id="category-title">Expand Your Vocabulary</h1>
-            <p id="category-description">
-                Learn 10+ new words daily with our smart vocabulary builder using 
-                spaced repetition, context learning, and memory techniques.
-            </p>
-            <a href="#start-learning" class="start-lesson-btn" id="start-learning-btn">
-                Start Learning Now
-            </a>
+        </div>
+    </header>
+
+    <!-- Level Selection -->
+    <section class="level-selection" id="levelSelection">
+        <div class="container">
+            <h2 id="level-title">Build Your Vocabulary Power</h2>
+            <p id="level-subtitle">Master English vocabulary with our systematic approach</p>
+            
+            <div class="level-cards">
+                <!-- Basic Level -->
+                <div class="level-card basic">
+                    <div class="level-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 id="basic-title">Basic Vocabulary</h3>
+                    <p id="basic-desc">Essential words for daily communication</p>
+                    
+                    <ul class="level-features" id="basic-features">
+                        <li>1,000 essential words</li>
+                        <li>Daily conversation vocabulary</li>
+                        <li>Basic idioms and phrases</li>
+                        <li>Pronunciation guidance</li>
+                        <li>Contextual learning</li>
+                    </ul>
+                    
+                    <div class="lesson-stats">
+                        <span>📚 <span id="basic-words">1,000</span> words</span>
+                        <span>🎯 <span id="basic-lessons">30</span> lessons</span>
+                    </div>
+                    
+                    <a href="#basicLessons" class="level-btn" data-level="basic" id="basic-btn">Start Basic Level</a>
+                </div>
+                
+                <!-- Intermediate Level -->
+                <div class="level-card intermediate">
+                    <div class="level-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3 id="intermediate-title">Intermediate Vocabulary</h3>
+                    <p id="intermediate-desc">Expand your word power for complex communication</p>
+                    
+                    <ul class="level-features" id="intermediate-features">
+                        <li>3,000+ academic words</li>
+                        <li>Business and professional terms</li>
+                        <li>Advanced idioms</li>
+                        <li>Collocations and phrasal verbs</li>
+                        <li>Writing enhancement</li>
+                    </ul>
+                    
+                    <div class="lesson-stats">
+                        <span>📚 <span id="intermediate-words">3,000</span> words</span>
+                        <span>🎯 <span id="intermediate-lessons">50</span> lessons</span>
+                    </div>
+                    
+                    <a href="#intermediateLessons" class="level-btn" data-level="intermediate" id="intermediate-btn">Start Intermediate Level</a>
+                </div>
+                
+                <!-- Advanced Level -->
+                <div class="level-card advanced">
+                    <div class="level-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 id="advanced-title">Advanced Vocabulary</h3>
+                    <p id="advanced-desc">IELTS/TOEFL preparation and academic excellence</p>
+                    
+                    <ul class="level-features" id="advanced-features">
+                        <li>5,000+ academic words</li>
+                        <li>IELTS/TOEFL focused</li>
+                        <li>Complex terminology</li>
+                        <li>Formal writing vocabulary</li>
+                        <li>Native-level expressions</li>
+                    </ul>
+                    
+                    <div class="lesson-stats">
+                        <span>📚 <span id="advanced-words">5,000</span> words</span>
+                        <span>🎯 <span id="advanced-lessons">80</span> lessons</span>
+                    </div>
+                    
+                    <a href="#advancedLessons" class="level-btn" data-level="advanced" id="advanced-btn">Start Advanced Level</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Rest of the template remains the same -->
-    <!-- ... -->
+    <!-- Learning Methods -->
+    <section class="methods-section">
+        <div class="container">
+            <h2 id="methods-title">Smart Learning Methods</h2>
+            <p id="methods-subtitle">Our proven techniques help you remember words longer</p>
+            
+            <div class="methods-grid">
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 id="method1-title">Spaced Repetition</h3>
+                    <p id="method1-desc">Review words at optimal intervals for long-term memory</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 id="method2-title">Context Learning</h3>
+                    <p id="method2-desc">Learn words in meaningful sentences and situations</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 id="method3-title">Interactive Games</h3>
+                    <p id="method3-desc">Reinforce learning with engaging vocabulary games</p>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 id="method4-title">Audio Learning</h3>
+                    <p id="method4-desc">Hear correct pronunciation and practice speaking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Basic Level Content -->
+    <section class="lesson-content" id="basicLessons">
+        <div class="container">
+            <div class="lesson-header">
+                <a href="#levelSelection" class="back-to-levels" id="back-basic">
+                    ← Back to Levels
+                </a>
+                <h2 id="basic-level-title">Basic Vocabulary Level</h2>
+                <p id="basic-level-desc">Master 1,000 essential words for daily communication</p>
+            </div>
+            
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <h3 id="progress-basic-title">Your Vocabulary Journey</h3>
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="basic-learned">0</span>
+                        <span id="stat1-basic">Words Learned</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="basic-mastered">0</span>
+                        <span id="stat2-basic">Words Mastered</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="basic-streak">0</span>
+                        <span id="stat3-basic">Day Streak</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="basic-accuracy">0%</span>
+                        <span id="stat4-basic">Quiz Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Word Lists -->
+            <h3 id="wordlists-basic-title">Daily Word Lists</h3>
+            <div class="word-lists" id="basic-word-lists">
+                <!-- Word lists will be loaded here -->
+            </div>
+            
+            <!-- Practice Games -->
+            <div class="games-section">
+                <h3 id="games-basic-title">Practice & Games</h3>
+                <div class="games-grid">
+                    <div class="game-card" data-game="flashcards">
+                        <div class="game-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h4 id="game1-basic-title">Flashcards</h4>
+                        <p id="game1-basic-desc">Learn with digital flashcards and spaced repetition</p>
+                        <button class="level-btn start-game-btn" data-game="flashcards">Start Now</button>
+                    </div>
+                    
+                    <div class="game-card" data-game="matching">
+                        <div class="game-icon">
+                            <i class="fas fa-random"></i>
+                        </div>
+                        <h4 id="game2-basic-title">Matching Game</h4>
+                        <p id="game2-basic-desc">Match words with their definitions</p>
+                        <button class="level-btn start-game-btn" data-game="matching">Start Now</button>
+                    </div>
+                    
+                    <div class="game-card" data-game="fillblank">
+                        <div class="game-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h4 id="game3-basic-title">Fill in Blanks</h4>
+                        <p id="game3-basic-desc">Complete sentences with correct words</p>
+                        <button class="level-btn start-game-btn" data-game="fillblank">Start Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intermediate Level Content -->
+    <section class="lesson-content" id="intermediateLessons">
+        <div class="container">
+            <div class="lesson-header">
+                <a href="#levelSelection" class="back-to-levels" id="back-intermediate">
+                    ← Back to Levels
+                </a>
+                <h2 id="intermediate-level-title">Intermediate Vocabulary Level</h2>
+                <p id="intermediate-level-desc">Expand your word power with 3,000+ academic and professional terms</p>
+            </div>
+            
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <h3 id="progress-intermediate-title">Your Vocabulary Journey</h3>
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="intermediate-learned">0</span>
+                        <span id="stat1-intermediate">Words Learned</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="intermediate-mastered">0</span>
+                        <span id="stat2-intermediate">Words Mastered</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="intermediate-streak">0</span>
+                        <span id="stat3-intermediate">Day Streak</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="intermediate-accuracy">0%</span>
+                        <span id="stat4-intermediate">Quiz Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content will be loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Advanced Level Content -->
+    <section class="lesson-content" id="advancedLessons">
+        <div class="container">
+            <div class="lesson-header">
+                <a href="#levelSelection" class="back-to-levels" id="back-advanced">
+                    ← Back to Levels
+                </a>
+                <h2 id="advanced-level-title">Advanced Vocabulary Level</h2>
+                <p id="advanced-level-desc">Master 5,000+ words for IELTS/TOEFL and academic excellence</p>
+            </div>
+            
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <h3 id="progress-advanced-title">Your Vocabulary Journey</h3>
+                <div class="progress-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="advanced-learned">0</span>
+                        <span id="stat1-advanced">Words Learned</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="advanced-mastered">0</span>
+                        <span id="stat2-advanced">Words Mastered</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="advanced-streak">0</span>
+                        <span id="stat3-advanced">Day Streak</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="advanced-accuracy">0%</span>
+                        <span id="stat4-advanced">Quiz Accuracy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content will be loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section" id="quizSection">
+        <div class="container">
+            <div class="quiz-header">
+                <span class="quiz-type" id="quiz-type-label">Vocabulary Quiz</span>
+                <h2 id="quiz-title">Test Your Knowledge</h2>
+                <p id="quiz-subtitle">Complete the quiz to reinforce your learning</p>
+            </div>
+            
+            <div class="quiz-content" id="quiz-content">
+                <!-- Quiz content will be loaded here -->
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="quiz-btn" id="prev-question" disabled>← Previous</button>
+                <div>
+                    <span id="question-counter">Question 1 of 10</span>
+                    <span id="score-display" style="margin-left: 20px; color: var(--primary-blue); font-weight: 600;"></span>
+                </div>
+                <button class="quiz-btn" id="next-question">Next →</button>
+                <button class="quiz-btn" id="submit-quiz" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review System -->
+    <section class="review-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 30px;" id="review-title">Smart Review System</h2>
+            <p style="text-align: center; margin-bottom: 50px; opacity: 0.9;" id="review-desc">Our algorithm tracks your progress and schedules reviews at optimal times</p>
+            
+            <div class="review-grid">
+                <div class="review-card">
+                    <i class="fas fa-calendar-check" style="font-size: 40px; margin-bottom: 20px;"></i>
+                    <h4 id="review1-title">Daily Reviews</h4>
+                    <p id="review1-desc">Review words from previous days to reinforce memory</p>
+                </div>
+                
+                <div class="review-card">
+                    <i class="fas fa-chart-line" style="font-size: 40px; margin-bottom: 20px;"></i>
+                    <h4 id="review2-title">Progress Tracking</h4>
+                    <p id="review2-desc">Monitor your improvement with detailed analytics</p>
+                </div>
+                
+                <div class="review-card">
+                    <i class="fas fa-bullseye" style="font-size: 40px; margin-bottom: 20px;"></i>
+                    <h4 id="review3-title">Weak Spot Analysis</h4>
+                    <p id="review3-desc">Focus on words you find challenging</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo-text" style="color: white; margin-bottom: 20px;">English by <span>Neo</span></div>
+                    <p id="footer-description">Your journey to English fluency starts here. Join our community of successful learners today!</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-links-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="placement-tests.html">Placement Test</a></li>
+                        <li><a href="voice-check.html">Voice Analysis</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-categories-title">Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="grammar.html">Grammar</a></li>
+                        <li><a href="vocabulary.html">Vocabulary</a></li>
+                        <li><a href="pronunciation.html">Pronunciation</a></li>
+                        <li><a href="ielts.html">IELTS Preparation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-contact-title">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:support@englishbyneo.com">support@englishbyneo.com</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p id="copyright-text">© 2023 English by Neo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Comprehensive Vocabulary Data
+        const vocabularyData = {
+            en: {
+                basic: {
+                    wordLists: [
+                        {
+                            id: 1,
+                            title: "Daily Routine Words",
+                            theme: "Everyday Activities",
+                            words: [
+                                {
+                                    word: "wake up",
+                                    phonetic: "/weɪk ʌp/",
+                                    type: "phrasal verb",
+                                    meaning: "to stop sleeping and become conscious",
+                                    example: "I usually wake up at 7 AM.",
+                                    synonyms: ["arise", "get up", "rouse"],
+                                    antonyms: ["sleep", "doze off"]
+                                },
+                                {
+                                    word: "prepare",
+                                    phonetic: "/prɪˈpeər/",
+                                    type: "verb",
+                                    meaning: "to make something ready for use or consideration",
+                                    example: "She prepares breakfast for her family every morning.",
+                                    synonyms: ["arrange", "organize", "get ready"],
+                                    antonyms: ["neglect", "ignore"]
+                                },
+                                {
+                                    word: "commute",
+                                    phonetic: "/kəˈmjuːt/",
+                                    type: "verb/noun",
+                                    meaning: "to travel regularly between work and home",
+                                    example: "My daily commute takes about 45 minutes.",
+                                    synonyms: ["travel", "journey", "transport"],
+                                    antonyms: ["stay", "remain"]
+                                }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            title: "Family & Relationships",
+                            theme: "People and Connections",
+                            words: [
+                                {
+                                    word: "relative",
+                                    phonetic: "/ˈrel.ə.tɪv/",
+                                    type: "noun",
+                                    meaning: "a person connected by blood or marriage",
+                                    example: "We're visiting relatives this weekend.",
+                                    synonyms: ["family member", "kin", "relation"],
+                                    antonyms: ["stranger", "outsider"]
+                                },
+                                {
+                                    word: "generation",
+                                    phonetic: "/ˌdʒen.ərˈeɪ.ʃən/",
+                                    type: "noun",
+                                    meaning: "all the people born and living at about the same time",
+                                    example: "Younger generations use technology differently.",
+                                    synonyms: ["age group", "cohort", "era"],
+                                    antonyms: []
+                                }
+                            ]
+                        }
+                    ],
+                    categories: [
+                        {
+                            name: "Food & Drinks",
+                            words: ["breakfast", "lunch", "dinner", "snack", "beverage", "ingredient", "recipe", "nutrition"]
+                        },
+                        {
+                            name: "Transportation",
+                            words: ["vehicle", "transport", "commute", "journey", "destination", "route", "schedule"]
+                        }
+                    ]
+                },
+                intermediate: {
+                    wordLists: [
+                        {
+                            id: 1,
+                            title: "Business Vocabulary",
+                            theme: "Professional Environment",
+                            words: [
+                                {
+                                    word: "strategy",
+                                    phonetic: "/ˈstræt.ə.dʒi/",
+                                    type: "noun",
+                                    meaning: "a plan of action designed to achieve a long-term or overall aim",
+                                    example: "The company developed a new marketing strategy.",
+                                    synonyms: ["plan", "approach", "methodology"],
+                                    antonyms: ["improvisation", "haphazardness"]
+                                },
+                                {
+                                    word: "efficient",
+                                    phonetic: "/ɪˈfɪʃ.ənt/",
+                                    type: "adjective",
+                                    meaning: "working in a well-organized and competent way",
+                                    example: "The new system is more efficient than the old one.",
+                                    synonyms: ["productive", "effective", "competent"],
+                                    antonyms: ["inefficient", "ineffective"]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                advanced: {
+                    wordLists: [
+                        {
+                            id: 1,
+                            title: "Academic Writing",
+                            theme: "Formal Language",
+                            words: [
+                                {
+                                    word: "consequently",
+                                    phonetic: "/ˈkɒn.sɪ.kwənt.li/",
+                                    type: "adverb",
+                                    meaning: "as a result; therefore",
+                                    example: "The experiment failed; consequently, we had to revise our hypothesis.",
+                                    synonyms: ["therefore", "thus", "accordingly"],
+                                    antonyms: ["nevertheless", "however"]
+                                },
+                                {
+                                    word: "notwithstanding",
+                                    phonetic: "/ˌnɒt.wɪðˈstæn.dɪŋ/",
+                                    type: "preposition/adverb",
+                                    meaning: "in spite of; despite",
+                                    example: "Notwithstanding the difficulties, they completed the project on time.",
+                                    synonyms: ["despite", "nevertheless", "however"],
+                                    antonyms: ["because of", "due to"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            fa: {
+                basic: {
+                    wordLists: [
+                        {
+                            id: 1,
+                            title: "واژگان روزمره",
+                            theme: "فعالیت‌های روزانه",
+                            words: [
+                                {
+                                    word: "بیدار شدن",
+                                    phonetic: "/weɪk ʌp/",
+                                    type: "فعل مرکب",
+                                    meaning: "از خواب بیدار شدن و هوشیار شدن",
+                                    example: "من معمولاً ساعت 7 صبح بیدار می‌شوم.",
+                                    synonyms: ["برخاستن", "از خواب برخاستن"],
+                                    antonyms: ["خوابیدن", "چرت زدن"]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+
+        // Quiz Questions Database
+        const quizDatabase = {
+            basic: [
+                {
+                    type: "multiple-choice",
+                    question: "What does 'commute' mean?",
+                    options: [
+                        "To cook food",
+                        "To travel regularly between work and home",
+                        "To communicate with friends",
+                        "To compute numbers"
+                    ],
+                    correct: 1,
+                    explanation: "'Commute' refers to regular travel between home and workplace."
+                },
+                {
+                    type: "matching",
+                    question: "Match the words with their meanings:",
+                    pairs: [
+                        { word: "prepare", meaning: "to make ready for use" },
+                        { word: "relative", meaning: "family member" },
+                        { word: "generation", meaning: "people born around same time" }
+                    ]
+                },
+                {
+                    type: "fill-blank",
+                    question: "Complete the sentence: I usually _____ up at 7 AM.",
+                    answer: "wake",
+                    explanation: "The correct phrase is 'wake up' meaning to stop sleeping."
+                }
+            ],
+            intermediate: [
+                {
+                    type: "synonym",
+                    question: "What is a synonym for 'efficient'?",
+                    options: ["Productive", "Lazy", "Slow", "Complicated"],
+                    correct: 0,
+                    explanation: "'Productive' is a synonym for 'efficient'."
+                }
+            ],
+            advanced: [
+                {
+                    type: "usage",
+                    question: "Which word is more appropriate for academic writing?",
+                    options: ["So", "Consequently", "Then", "Next"],
+                    correct: 1,
+                    explanation: "'Consequently' is more formal and appropriate for academic writing."
+                }
+            ]
+        };
+
+        // Game Data
+        const gameData = {
+            flashcards: {
+                basic: [
+                    { front: "wake up", back: "to stop sleeping", example: "I wake up at 7 AM." },
+                    { front: "prepare", back: "to make ready", example: "Prepare your homework." },
+                    { front: "commute", back: "daily travel to work", example: "My commute is long." }
+                ]
+            },
+            matching: {
+                basic: [
+                    { term: "wake up", definition: "to stop sleeping" },
+                    { term: "prepare", definition: "to make ready" },
+                    { term: "commute", definition: "daily travel to work" }
+                ]
+            }
+        };
+
+        // Current state
+        let currentLanguage = 'en';
+        let currentLevel = null;
+        let currentGame = null;
+        let userProgress = {
+            basic: { 
+                learned: [], 
+                mastered: [],
+                streak: 0,
+                accuracy: 0,
+                lastActive: null
+            },
+            intermediate: { 
+                learned: [], 
+                mastered: [],
+                streak: 0,
+                accuracy: 0,
+                lastActive: null
+            },
+            advanced: { 
+                learned: [], 
+                mastered: [],
+                streak: 0,
+                accuracy: 0,
+                lastActive: null
+            }
+        };
+
+        // Translations
+        const translations = {
+            en: {
+                // Navigation
+                home: "Home",
+                grammar: "Grammar",
+                vocabulary: "Vocabulary",
+                pronunciation: "Pronunciation",
+                voiceCheck: "Voice Check",
+                placementTests: "Placement Tests",
+                ielts: "IELTS",
+                toefl: "TOEFL",
+                
+                // Level Selection
+                levelTitle: "Build Your Vocabulary Power",
+                levelSubtitle: "Master English vocabulary with our systematic approach",
+                
+                // Basic Level
+                basicTitle: "Basic Vocabulary",
+                basicDesc: "Essential words for daily communication",
+                basicFeatures: [
+                    "1,000 essential words",
+                    "Daily conversation vocabulary",
+                    "Basic idioms and phrases",
+                    "Pronunciation guidance",
+                    "Contextual learning"
+                ],
+                basicBtn: "Start Basic Level",
+                
+                // Intermediate Level
+                intermediateTitle: "Intermediate Vocabulary",
+                intermediateDesc: "Expand your word power for complex communication",
+                intermediateFeatures: [
+                    "3,000+ academic words",
+                    "Business and professional terms",
+                    "Advanced idioms",
+                    "Collocations and phrasal verbs",
+                    "Writing enhancement"
+                ],
+                intermediateBtn: "Start Intermediate Level",
+                
+                // Advanced Level
+                advancedTitle: "Advanced Vocabulary",
+                advancedDesc: "IELTS/TOEFL preparation and academic excellence",
+                advancedFeatures: [
+                    "5,000+ academic words",
+                    "IELTS/TOEFL focused",
+                    "Complex terminology",
+                    "Formal writing vocabulary",
+                    "Native-level expressions"
+                ],
+                advancedBtn: "Start Advanced Level",
+                
+                // Methods Section
+                methodsTitle: "Smart Learning Methods",
+                methodsSubtitle: "Our proven techniques help you remember words longer",
+                method1Title: "Spaced Repetition",
+                method1Desc: "Review words at optimal intervals for long-term memory",
+                method2Title: "Context Learning",
+                method2Desc: "Learn words in meaningful sentences and situations",
+                method3Title: "Interactive Games",
+                method3Desc: "Reinforce learning with engaging vocabulary games",
+                method4Title: "Audio Learning",
+                method4Desc: "Hear correct pronunciation and practice speaking",
+                
+                // Progress Stats
+                stat1Basic: "Words Learned",
+                stat2Basic: "Words Mastered",
+                stat3Basic: "Day Streak",
+                stat4Basic: "Quiz Accuracy",
+                
+                // Word Lists
+                wordlistsBasicTitle: "Daily Word Lists",
+                
+                // Games
+                gamesBasicTitle: "Practice & Games",
+                game1BasicTitle: "Flashcards",
+                game1BasicDesc: "Learn with digital flashcards and spaced repetition",
+                game2BasicTitle: "Matching Game",
+                game2BasicDesc: "Match words with their definitions",
+                game3BasicTitle: "Fill in Blanks",
+                game3BasicDesc: "Complete sentences with correct words",
+                
+                // Review System
+                reviewTitle: "Smart Review System",
+                reviewDesc: "Our algorithm tracks your progress and schedules reviews at optimal times",
+                review1Title: "Daily Reviews",
+                review1Desc: "Review words from previous days to reinforce memory",
+                review2Title: "Progress Tracking",
+                review2Desc: "Monitor your improvement with detailed analytics",
+                review3Title: "Weak Spot Analysis",
+                review3Desc: "Focus on words you find challenging",
+                
+                // Quiz
+                quizTitle: "Test Your Knowledge",
+                quizSubtitle: "Complete the quiz to reinforce your learning",
+                previous: "← Previous",
+                next: "Next →",
+                submit: "Submit Quiz",
+                correct: "Correct!",
+                incorrect: "Incorrect!",
+                
+                // Footer
+                footerDescription: "Your journey to English fluency starts here. Join our community of successful learners today!",
+                footerLinksTitle: "Quick Links",
+                footerCategoriesTitle: "Categories",
+                footerContactTitle: "Contact Us",
+                copyrightText: "© 2023 English by Neo. All rights reserved."
+            },
+            
+            fa: {
+                // Navigation
+                home: "خانه",
+                grammar: "گرامر",
+                vocabulary: "واژگان",
+                pronunciation: "تلفظ",
+                voiceCheck: "بررسی صدا",
+                placementTests: "آزمون تعیین سطح",
+                ielts: "آیلتس",
+                toefl: "تافل",
+                
+                // Level Selection
+                levelTitle: "قدرت واژگان خود را بسازید",
+                levelSubtitle: "با رویکرد سیستماتیک ما، واژگان انگلیسی را تسلط یابید",
+                
+                // Basic Level
+                basicTitle: "واژگان پایه",
+                basicDesc: "واژگان ضروری برای ارتباط روزمره",
+                basicFeatures: [
+                    "۱۰۰۰ واژه ضروری",
+                    "واژگان مکالمه روزمره",
+                    "اصطلاحات و عبارات پایه",
+                    "راهنمایی تلفظ",
+                    "یادگیری متنی"
+                ],
+                basicBtn: "شروع سطح پایه",
+                
+                // Intermediate Level
+                intermediateTitle: "واژگان متوسط",
+                intermediateDesc: "قدرت واژگان خود را برای ارتباط پیچیده گسترش دهید",
+                intermediateFeatures: [
+                    "بیش از ۳۰۰۰ واژه آکادمیک",
+                    "اصطلاحات تجاری و حرفه‌ای",
+                    "اصطلاحات پیشرفته",
+                    "هم‌آیی‌ها و افعال چندکلمه‌ای",
+                    "بهبود نگارش"
+                ],
+                intermediateBtn: "شروع سطح متوسط",
+                
+                // Advanced Level
+                advancedTitle: "واژگان پیشرفته",
+                advancedDesc: "آمادگی آیلتس/تافل و تعالی آکادمیک",
+                advancedFeatures: [
+                    "بیش از ۵۰۰۰ واژه آکادمیک",
+                    "متمرکز بر آیلتس/تافل",
+                    "اصطلاحات پیچیده",
+                    "واژگان نگارش رسمی",
+                    "عبارات سطح بومی"
+                ],
+                advancedBtn: "شروع سطح پیشرفته",
+                
+                // Methods Section
+                methodsTitle: "روش‌های یادگیری هوشمند",
+                methodsSubtitle: "تکنیک‌های اثبات شده ما به شما کمک می‌کند کلمات را طولانی‌تر به خاطر بسپارید",
+                method1Title: "تکرار با فاصله",
+                method1Desc: "کلمات را در فواصل بهینه برای حافظه بلندمدت مرور کنید",
+                method2Title: "یادگیری متنی",
+                method2Desc: "کلمات را در جملات و موقعیت‌های معنادار یاد بگیرید",
+                method3Title: "بازی‌های تعاملی",
+                method3Desc: "یادگیری را با بازی‌های واژگانی جذاب تقویت کنید",
+                method4Title: "یادگیری صوتی",
+                method4Desc: "تلفظ صحیح را بشنوید و صحبت کردن را تمرین کنید",
+                
+                // Progress Stats
+                stat1Basic: "واژه‌های یادگرفته شده",
+                stat2Basic: "واژه‌های تسلط یافته",
+                stat3Basic: "روند روزانه",
+                stat4Basic: "دقت کوییز",
+                
+                // Word Lists
+                wordlistsBasicTitle: "فهرست‌های واژگان روزانه",
+                
+                // Games
+                gamesBasicTitle: "تمرین و بازی‌ها",
+                game1BasicTitle: "فلش کارت",
+                game1BasicDesc: "با فلش کارت دیجیتال و تکرار با فاصله یاد بگیرید",
+                game2BasicTitle: "بازی تطبیق",
+                game2BasicDesc: "کلمات را با تعاریفشان تطبیق دهید",
+                game3BasicTitle: "پر کردن جای خالی",
+                game3BasicDesc: "جملات را با کلمات صحیح کامل کنید",
+                
+                // Review System
+                reviewTitle: "سیستم مرور هوشمند",
+                reviewDesc: "الگوریتم ما پیشرفت شما را ردیابی می‌کند و مرورها را در زمان‌های بهینه برنامه‌ریزی می‌کند",
+                review1Title: "مرورهای روزانه",
+                review1Desc: "واژه‌های روزهای قبل را برای تقویت حافظه مرور کنید",
+                review2Title: "ردیابی پیشرفت",
+                review2Desc: "پیشرفت خود را با تحلیل‌های دقیق نظارت کنید",
+                review3Title: "تحلیل نقاط ضعف",
+                review3Desc: "روی واژه‌هایی که برایتان چالش‌برانگیز است تمرکز کنید",
+                
+                // Quiz
+                quizTitle: "دانش خود را آزمایش کنید",
+                quizSubtitle: "کوییز را کامل کنید تا یادگیری خود را تقویت کنید",
+                previous: "← قبلی",
+                next: "بعدی →",
+                submit: "ارسال کوییز",
+                correct: "صحیح!",
+                incorrect: "غلط!",
+                
+                // Footer
+                footerDescription: "سفر شما به تسلط انگلیسی از اینجا شروع می‌شود. امروز به جامعه زبان‌آموزان موفق ما بپیوندید!",
+                footerLinksTitle: "لینک‌های سریع",
+                footerCategoriesTitle: "دسته‌بندی‌ها",
+                footerContactTitle: "تماس با ما",
+                copyrightText: "© ۲۰۲۳ انگلیسی با نئو. کلیه حقوق محفوظ است."
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initLanguageSwitcher();
+            loadUserProgress();
+            setupEventListeners();
+            updateContent(currentLanguage);
+            updateStreak();
+        });
+
+        // Language Management
+        function initLanguageSwitcher() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    switchLanguage(lang);
+                });
+            });
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.body.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            
+            updateContent(lang);
+        }
+
+        function updateContent(lang) {
+            const t = translations[lang];
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach((link, index) => {
+                const pages = ['home', 'grammar', 'vocabulary', 'pronunciation', 'voiceCheck', 'placementTests', 'ielts', 'toefl'];
+                if (t[pages[index]]) {
+                    link.textContent = t[pages[index]];
+                }
+            });
+            
+            // Update level selection
+            document.getElementById('level-title').textContent = t.levelTitle;
+            document.getElementById('level-subtitle').textContent = t.levelSubtitle;
+            
+            // Update level cards
+            document.getElementById('basic-title').textContent = t.basicTitle;
+            document.getElementById('basic-desc').textContent = t.basicDesc;
+            document.getElementById('basic-btn').textContent = t.basicBtn;
+            
+            document.getElementById('intermediate-title').textContent = t.intermediateTitle;
+            document.getElementById('intermediate-desc').textContent = t.intermediateDesc;
+            document.getElementById('intermediate-btn').textContent = t.intermediateBtn;
+            
+            document.getElementById('advanced-title').textContent = t.advancedTitle;
+            document.getElementById('advanced-desc').textContent = t.advancedDesc;
+            document.getElementById('advanced-btn').textContent = t.advancedBtn;
+            
+            // Update level features
+            document.getElementById('basic-features').innerHTML = t.basicFeatures.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('intermediate-features').innerHTML = t.intermediateFeatures.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('advanced-features').innerHTML = t.advancedFeatures.map(f => `<li>${f}</li>`).join('');
+            
+            // Update methods section
+            document.getElementById('methods-title').textContent = t.methodsTitle;
+            document.getElementById('methods-subtitle').textContent = t.methodsSubtitle;
+            document.getElementById('method1-title').textContent = t.method1Title;
+            document.getElementById('method1-desc').textContent = t.method1Desc;
+            document.getElementById('method2-title').textContent = t.method2Title;
+            document.getElementById('method2-desc').textContent = t.method2Desc;
+            document.getElementById('method3-title').textContent = t.method3Title;
+            document.getElementById('method3-desc').textContent = t.method3Desc;
+            document.getElementById('method4-title').textContent = t.method4Title;
+            document.getElementById('method4-desc').textContent = t.method4Desc;
+            
+            // Update footer
+            document.getElementById('footer-description').textContent = t.footerDescription;
+            document.getElementById('footer-links-title').textContent = t.footerLinksTitle;
+            document.getElementById('footer-categories-title').textContent = t.footerCategoriesTitle;
+            document.getElementById('footer-contact-title').textContent = t.footerContactTitle;
+            document.getElementById('copyright-text').textContent = t.copyrightText;
+            
+            // Update current level if active
+            if (currentLevel) {
+                updateLevelContent(currentLevel);
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Level selection
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const level = btn.dataset.level;
+                    showLevelContent(level);
+                });
+            });
+            
+            // Back buttons
+            document.querySelectorAll('.back-to-levels').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showLevelSelection();
+                });
+            });
+            
+            // Game buttons
+            document.querySelectorAll('.start-game-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const game = this.closest('.game-card').dataset.game;
+                    startGame(game);
+                });
+            });
+            
+            // Quiz navigation
+            document.getElementById('prev-question').addEventListener('click', prevQuestion);
+            document.getElementById('next-question').addEventListener('click', nextQuestion);
+            document.getElementById('submit-quiz').addEventListener('click', submitQuiz);
+        }
+
+        // Level Management
+        function showLevelContent(level) {
+            currentLevel = level;
+            
+            document.getElementById('levelSelection').style.display = 'none';
+            document.querySelectorAll('.lesson-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('quizSection').classList.remove('active');
+            
+            const levelSection = document.getElementById(level + 'Lessons');
+            levelSection.classList.add('active');
+            
+            updateLevelContent(level);
+            window.scrollTo(0, 0);
+        }
+
+        function showLevelSelection() {
+            currentLevel = null;
+            
+            document.getElementById('levelSelection').style.display = 'block';
+            document.querySelectorAll('.lesson-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('quizSection').classList.remove('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        function updateLevelContent(level) {
+            const t = translations[currentLanguage];
+            const data = vocabularyData[currentLanguage][level];
+            
+            // Update level titles
+            const titleMap = {
+                basic: `${t.basicTitle} Level`,
+                intermediate: `${t.intermediateTitle} Level`,
+                advanced: `${t.advancedTitle} Level`
+            };
+            
+            document.getElementById(`${level}-level-title`).textContent = titleMap[level];
+            
+            // Update stats
+            updateProgressStats(level);
+            
+            // Load word lists
+            if (level === 'basic') {
+                loadBasicWordLists();
+            }
+            
+            // Update game titles
+            if (level === 'basic') {
+                document.getElementById('games-basic-title').textContent = t.gamesBasicTitle;
+                document.getElementById('game1-basic-title').textContent = t.game1BasicTitle;
+                document.getElementById('game1-basic-desc').textContent = t.game1BasicDesc;
+                document.getElementById('game2-basic-title').textContent = t.game2BasicTitle;
+                document.getElementById('game2-basic-desc').textContent = t.game2BasicDesc;
+                document.getElementById('game3-basic-title').textContent = t.game3BasicTitle;
+                document.getElementById('game3-basic-desc').textContent = t.game3BasicDesc;
+                document.getElementById('wordlists-basic-title').textContent = t.wordlistsBasicTitle;
+            }
+        }
+
+        function loadBasicWordLists() {
+            const container = document.getElementById('basic-word-lists');
+            if (!container) return;
+            
+            const lists = vocabularyData[currentLanguage].basic.wordLists;
+            container.innerHTML = '';
+            
+            lists.forEach(list => {
+                const listCard = document.createElement('div');
+                listCard.className = 'word-list-card';
+                listCard.innerHTML = `
+                    <div class="list-header">
+                        <h3>${list.title}</h3>
+                        <span class="word-count">${list.words.length} words</span>
+                    </div>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">Theme: ${list.theme}</p>
+                    <ul class="word-items">
+                        ${list.words.map(word => `
+                            <li>
+                                <div>
+                                    <strong style="color: var(--primary-blue);">${word.word}</strong>
+                                    <span style="color: var(--text-light); font-size: 0.9rem;">${word.phonetic}</span>
+                                </div>
+                                <button class="practice-btn" style="padding: 5px 15px; font-size: 0.8rem;" 
+                                        data-word='${JSON.stringify(word).replace(/'/g, "&apos;")}'>
+                                    Practice
+                                </button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button class="level-btn start-quiz-btn" data-list-id="${list.id}" 
+                            style="width: 100%; margin-top: 20px;">
+                        Take Quiz on This List
+                    </button>
+                `;
+                
+                container.appendChild(listCard);
+            });
+            
+            // Add event listeners to practice buttons
+            container.querySelectorAll('.practice-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const wordData = JSON.parse(this.dataset.word.replace(/&apos;/g, "'"));
+                    showWordPractice(wordData);
+                });
+            });
+            
+            // Add event listeners to quiz buttons
+            container.querySelectorAll('.start-quiz-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const listId = parseInt(this.dataset.listId);
+                    startListQuiz(listId);
+                });
+            });
+        }
+
+        function showWordPractice(word) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    border-radius: 20px;
+                    padding: 40px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    position: relative;
+                ">
+                    <button class="close-modal" style="
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        background: none;
+                        border: none;
+                        font-size: 24px;
+                        cursor: pointer;
+                        color: var(--text-light);
+                    ">×</button>
+                    
+                    <h2 style="color: var(--primary-blue); margin-bottom: 10px;">${word.word}</h2>
+                    <p style="color: var(--text-light); margin-bottom: 20px;">${word.phonetic}</p>
+                    
+                    <div style="margin: 25px 0;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 10px;">
+                            ${currentLanguage === 'en' ? 'Meaning:' : 'معنی:'}
+                        </h4>
+                        <p>${word.meaning}</p>
+                    </div>
+                    
+                    <div style="background: var(--light-blue); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4 style="color: var(--text-dark); margin-bottom: 10px;">
+                            ${currentLanguage === 'en' ? 'Example:' : 'مثال:'}
+                        </h4>
+                        <p>${word.example}</p>
+                    </div>
+                    
+                    ${word.synonyms && word.synonyms.length > 0 ? `
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: var(--text-dark); margin-bottom: 10px;">
+                                ${currentLanguage === 'en' ? 'Synonyms:' : 'مترادف‌ها:'}
+                            </h4>
+                            <p>${word.synonyms.join(', ')}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="word-actions" style="margin-top: 30px;">
+                        <button class="action-btn listen-btn" onclick="speakWord('${word.word}')">
+                            <i class="fas fa-volume-up"></i> 
+                            ${currentLanguage === 'en' ? 'Listen' : 'گوش دادن'}
+                        </button>
+                        <button class="action-btn save-btn" onclick="saveWord('${word.word}')">
+                            <i class="fas fa-bookmark"></i> 
+                            ${currentLanguage === 'en' ? 'Save' : 'ذخیره'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.querySelector('.close-modal').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+        }
+
+        function startListQuiz(listId) {
+            const t = translations[currentLanguage];
+            const questions = getQuizQuestions(currentLevel, listId);
+            
+            document.querySelector('.lesson-content.active').classList.remove('active');
+            document.getElementById('quizSection').classList.add('active');
+            
+            let currentQuestion = 0;
+            let score = 0;
+            let userAnswers = [];
+            
+            function displayQuestion(index) {
+                const quizContent = document.getElementById('quiz-content');
+                const question = questions[index];
+                
+                let questionHTML = '';
+                
+                if (question.type === 'multiple-choice') {
+                    questionHTML = `
+                        <div class="quiz-question">
+                            <h3>${question.question}</h3>
+                        </div>
+                        <div class="quiz-options">
+                            ${question.options.map((option, i) => `
+                                <div class="quiz-option" data-index="${i}">
+                                    <span class="option-number">${String.fromCharCode(65 + i)}</span>
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (question.type === 'fill-blank') {
+                    questionHTML = `
+                        <div class="quiz-question">
+                            <h3>${question.question}</h3>
+                        </div>
+                        <div style="margin: 30px 0;">
+                            <input type="text" id="blank-answer" 
+                                   placeholder="${currentLanguage === 'en' ? 'Type your answer here' : 'پاسخ خود را اینجا تایپ کنید'}"
+                                   style="width: 100%; padding: 15px; border: 2px solid var(--light-blue); border-radius: 10px; font-size: 1rem;">
+                        </div>
+                    `;
+                }
+                
+                quizContent.innerHTML = questionHTML + `
+                    <div class="quiz-feedback" id="feedback"></div>
+                `;
+                
+                // Update counter
+                document.getElementById('question-counter').textContent = 
+                    `${currentLanguage === 'en' ? 'Question' : 'سوال'} ${index + 1} ${currentLanguage === 'en' ? 'of' : 'از'} ${questions.length}`;
+                
+                // Setup event listeners based on question type
+                if (question.type === 'multiple-choice') {
+                    document.querySelectorAll('.quiz-option').forEach(option => {
+                        option.addEventListener('click', function() {
+                            document.querySelectorAll('.quiz-option').forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            this.classList.add('selected');
+                            userAnswers[index] = parseInt(this.dataset.index);
+                            checkAnswer(index);
+                        });
+                    });
+                } else if (question.type === 'fill-blank') {
+                    const input = document.getElementById('blank-answer');
+                    input.addEventListener('input', function() {
+                        userAnswers[index] = this.value.trim().toLowerCase();
+                        checkAnswer(index);
+                    });
+                }
+                
+                // Restore previous answer
+                if (userAnswers[index] !== undefined) {
+                    if (question.type === 'multiple-choice') {
+                        document.querySelectorAll('.quiz-option')[userAnswers[index]]?.classList.add('selected');
+                    } else if (question.type === 'fill-blank') {
+                        document.getElementById('blank-answer').value = userAnswers[index];
+                    }
+                }
+                
+                // Update navigation buttons
+                updateQuizNavigation(index, questions.length);
+            }
+            
+            function checkAnswer(index) {
+                const question = questions[index];
+                const feedback = document.getElementById('feedback');
+                
+                if (question.type === 'multiple-choice') {
+                    if (userAnswers[index] === question.correct) {
+                        feedback.innerHTML = `<div style="color: var(--accent-green);">
+                            <i class="fas fa-check"></i> ${t.correct} ${question.explanation}
+                        </div>`;
+                    } else {
+                        feedback.innerHTML = `<div style="color: #f44336;">
+                            <i class="fas fa-times"></i> ${t.incorrect} ${question.explanation}
+                        </div>`;
+                    }
+                } else if (question.type === 'fill-blank') {
+                    if (userAnswers[index] === question.answer.toLowerCase()) {
+                        feedback.innerHTML = `<div style="color: var(--accent-green);">
+                            <i class="fas fa-check"></i> ${t.correct} ${question.explanation}
+                        </div>`;
+                    } else {
+                        feedback.innerHTML = `<div style="color: #f44336;">
+                            <i class="fas fa-times"></i> ${t.incorrect} ${question.explanation}
+                        </div>`;
+                    }
+                }
+                
+                feedback.classList.add('active');
+                document.getElementById('next-question').disabled = false;
+                
+                if (index === questions.length - 1) {
+                    document.getElementById('submit-quiz').style.display = 'block';
+                    document.getElementById('next-question').style.display = 'none';
+                }
+            }
+            
+            function updateQuizNavigation(index, total) {
+                document.getElementById('prev-question').disabled = index === 0;
+                document.getElementById('next-question').disabled = true;
+                
+                if (index === total - 1) {
+                    document.getElementById('submit-quiz').style.display = 'block';
+                    document.getElementById('next-question').style.display = 'none';
+                } else {
+                    document.getElementById('submit-quiz').style.display = 'none';
+                    document.getElementById('next-question').style.display = 'block';
+                }
+            }
+            
+            // Store functions globally
+            window.prevQuestion = function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    displayQuestion(currentQuestion);
+                }
+            };
+            
+            window.nextQuestion = function() {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    displayQuestion(currentQuestion);
+                }
+            };
+            
+            window.submitQuiz = function() {
+                // Calculate score
+                score = questions.reduce((total, q, index) => {
+                    if (q.type === 'multiple-choice') {
+                        return total + (userAnswers[index] === q.correct ? 1 : 0);
+                    } else if (q.type === 'fill-blank') {
+                        return total + (userAnswers[index] === q.answer.toLowerCase() ? 1 : 0);
+                    }
+                    return total;
+                }, 0);
+                
+                // Update progress
+                updateQuizResults(score, questions.length);
+                
+                // Show results
+                const quizContent = document.getElementById('quiz-content');
+                quizContent.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">
+                            ${score >= questions.length / 2 ? '🎉' : '📚'}
+                        </div>
+                        <h3>${currentLanguage === 'en' ? 'Quiz Completed!' : 'کوییز تکمیل شد!'}</h3>
+                        <p style="font-size: 1.2rem; margin: 20px 0; color: var(--primary-blue);">
+                            ${currentLanguage === 'en' ? 'Your Score:' : 'امتیاز شما:'} 
+                            <strong>${score}/${questions.length}</strong>
+                        </p>
+                        <p style="margin: 20px 0;">
+                            ${score >= questions.length / 2 ? 
+                                (currentLanguage === 'en' ? 'Excellent work! Keep it up!' : 'کار عالی! ادامه دهید!') :
+                                (currentLanguage === 'en' ? 'Review the words and try again!' : 'واژه‌ها را مرور کنید و دوباره تلاش کنید!')
+                            }
+                        </p>
+                        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
+                            <button onclick="retryQuiz()" class="quiz-btn">
+                                ${currentLanguage === 'en' ? 'Try Again' : 'دوباره تلاش کنید'}
+                            </button>
+                            <button onclick="backToLessons()" class="quiz-btn" style="background: var(--accent-green);">
+                                ${currentLanguage === 'en' ? 'Back to Lessons' : 'بازگشت به دروس'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            };
+            
+            // Initial display
+            displayQuestion(currentQuestion);
+        }
+
+        function getQuizQuestions(level, listId) {
+            // For demo, return sample questions
+            return [
+                {
+                    type: "multiple-choice",
+                    question: currentLanguage === 'en' ? 
+                        "What does 'commute' mean?" : 
+                        "معنی 'commute' چیست؟",
+                    options: currentLanguage === 'en' ? [
+                        "To cook food",
+                        "To travel regularly between work and home",
+                        "To communicate with friends",
+                        "To compute numbers"
+                    ] : [
+                        "پختن غذا",
+                        "سفر منظم بین محل کار و خانه",
+                        "ارتباط با دوستان",
+                        "محاسبه اعداد"
+                    ],
+                    correct: 1,
+                    explanation: currentLanguage === 'en' ? 
+                        "'Commute' refers to regular travel between home and workplace." :
+                        "'Commute' به سفر منظم بین خانه و محل کار اشاره می‌کند."
+                },
+                {
+                    type: "fill-blank",
+                    question: currentLanguage === 'en' ? 
+                        "Complete the sentence: I usually _____ up at 7 AM." :
+                        "جمله را کامل کنید: من معمولاً ساعت ۷ صبح _____ می‌شوم.",
+                    answer: "wake",
+                    explanation: currentLanguage === 'en' ? 
+                        "The correct phrase is 'wake up' meaning to stop sleeping." :
+                        "عبارت صحیح 'wake up' است که به معنای بیدار شدن است."
+                }
+            ];
+        }
+
+        function startGame(gameType) {
+            alert(`${currentLanguage === 'en' ? 'Starting' : 'شروع'} ${gameType} ${currentLanguage === 'en' ? 'game...' : 'بازی...'}`);
+            // Game implementation would go here
+        }
+
+        // Progress Management
+        function updateProgressStats(level) {
+            const progress = userProgress[level];
+            
+            document.getElementById(`${level}-learned`).textContent = progress.learned.length;
+            document.getElementById(`${level}-mastered`).textContent = progress.mastered.length;
+            document.getElementById(`${level}-streak`).textContent = progress.streak;
+            document.getElementById(`${level}-accuracy`).textContent = `${progress.accuracy}%`;
+        }
+
+        function updateQuizResults(score, total) {
+            if (currentLevel) {
+                const accuracy = Math.round((score / total) * 100);
+                userProgress[currentLevel].accuracy = accuracy;
+                
+                // Mark words as learned
+                const currentList = vocabularyData[currentLanguage][currentLevel].wordLists[0];
+                if (currentList) {
+                    currentList.words.forEach(word => {
+                        if (!userProgress[currentLevel].learned.includes(word.word)) {
+                            userProgress[currentLevel].learned.push(word.word);
+                        }
+                    });
+                }
+                
+                saveUserProgress();
+                updateProgressStats(currentLevel);
+            }
+        }
+
+        function updateStreak() {
+            const today = new Date().toDateString();
+            
+            ['basic', 'intermediate', 'advanced'].forEach(level => {
+                const progress = userProgress[level];
+                
+                if (progress.lastActive) {
+                    const lastActive = new Date(progress.lastActive);
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    
+                    if (lastActive.toDateString() === yesterday.toDateString()) {
+                        progress.streak++;
+                    } else if (lastActive.toDateString() !== today) {
+                        progress.streak = 0;
+                    }
+                }
+                
+                progress.lastActive = today;
+            });
+            
+            saveUserProgress();
+        }
+
+        // Utility Functions
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function saveWord(word) {
+            alert(`${currentLanguage === 'en' ? 'Saved' : 'ذخیره شد'} "${word}" ${currentLanguage === 'en' ? 'to your word list!' : 'به فهرست واژگان شما!'}`);
+        }
+
+        function loadUserProgress() {
+            const saved = localStorage.getItem('englishByNeoVocabularyProgress');
+            if (saved) {
+                userProgress = JSON.parse(saved);
+            }
+        }
+
+        function saveUserProgress() {
+            localStorage.setItem('englishByNeoVocabularyProgress', JSON.stringify(userProgress));
+        }
+
+        // Global functions for buttons in results
+        window.retryQuiz = function() {
+            if (currentLevel) {
+                startListQuiz(1); // Default to first list for demo
+            }
+        };
+
+        window.backToLessons = function() {
+            if (currentLevel) {
+                showLevelContent(currentLevel);
+            }
+        };
+    </script>
+</body>
+</html>

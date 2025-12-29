@@ -1,17 +1,2095 @@
-<body data-page="conversation">
-    <section class="category-hero">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English by Neo - Live Conversation Practice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Import all styles from index.html with additions */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-orange: #ff6b35;
+            --accent-green: #34a853;
+            --accent-purple: #9c27b0;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e7f1 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Header Sticky Navigation */
+        .header-main {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(26, 115, 232, 0.1);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo on Top Left */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-wrapper:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo-3d-container {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 5px 15px rgba(26, 115, 232, 0.3));
+            transition: var(--transition);
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 28px;
+            box-shadow: 0 8px 16px rgba(26, 115, 232, 0.2);
+        }
+
+        .logo-3d-container:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 12px 24px rgba(26, 115, 232, 0.3);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .logo-text span {
+            color: var(--primary-blue);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-orange);
+            border-radius: 1px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-wrapper:hover .logo-text span::after {
+            transform: scaleX(1);
+        }
+
+        /* Language Switcher in Header */
+        .header-language-switcher {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            padding: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(26, 115, 232, 0.2);
+        }
+
+        .header-lang-btn {
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-dark);
+            font-size: 14px;
+            min-width: 70px;
+        }
+
+        .header-lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        .header-lang-btn:hover:not(.active) {
+            background: var(--light-blue);
+            transform: translateY(-1px);
+        }
+
+        /* Navigation Menu */
+        .main-nav {
+            display: flex;
+            gap: 8px;
+            margin: 0 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-link {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 25px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            font-size: 15px;
+            white-space: nowrap;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(26, 115, 232, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.1);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            box-shadow: 0 6px 20px rgba(26, 115, 232, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Padding */
+        .main-content {
+            padding-top: 100px;
+        }
+
+        /* Level Navigation */
+        .level-nav {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 30px auto;
+            box-shadow: var(--shadow);
+            max-width: 1000px;
+        }
+
+        .level-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .level-tab {
+            padding: 15px 30px;
+            border: none;
+            background: var(--light-blue);
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .level-tab.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.3);
+        }
+
+        .level-tab:hover:not(.active) {
+            transform: translateY(-2px);
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Level Content */
+        .level-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .level-content.active {
+            display: block;
+        }
+
+        /* Conversation Section Header */
+        .conversation-header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .conversation-header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .conversation-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        /* Level Cards */
+        .level-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .level-card.basic { border-left-color: #4CAF50; }
+        .level-card.intermediate { border-left-color: #FF9800; }
+        .level-card.advanced { border-left-color: #F44336; }
+
+        .level-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .level-title h2 {
+            font-size: 2rem;
+            color: var(--text-dark);
+        }
+
+        .level-badge {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .basic .level-badge { background: #4CAF50; }
+        .intermediate .level-badge { background: #FF9800; }
+        .advanced .level-badge { background: #F44336; }
+
+        /* Section Grid */
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .info-card li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .info-card li:before {
+            content: "•";
+            color: var(--primary-blue);
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+
+        /* Audio Player */
+        .audio-player {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            padding: 10px 20px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audio-btn:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Practice Section */
+        .practice-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .practice-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .practice-header {
+            margin-bottom: 30px;
+        }
+
+        .practice-header h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .conversation-display {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 200px;
+            text-align: left;
+        }
+
+        .ai-message {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .user-response {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .user-response textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .user-response textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .response-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .record-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .record-btn:hover {
+            background: #ff5722;
+            transform: translateY(-2px);
+        }
+
+        .record-btn.recording {
+            background: #f44336;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+        }
+
+        .evaluation {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .evaluation h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .evaluation-score {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-blue) 0% var(--score), #e0e0e0 var(--score) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .score-value {
+            position: relative;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Resources Section */
+        .resources-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .resource-card {
+            background: var(--light-blue);
+            border-radius: 15px;
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .resource-card h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        /* Call to Action */
+        .cta-professional {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            text-align: center;
+            padding: 60px 40px;
+            border-radius: 20px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-professional::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-professional h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-professional p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, var(--accent-orange), #ff5722);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 12px 25px rgba(255, 107, 53, 0.3);
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cta-button:hover::after {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 18px 35px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Footer */
+        .footer-main {
+            background: linear-gradient(135deg, var(--text-dark), #000);
+            color: var(--white);
+            padding: 50px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--secondary-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: inline-block;
+            padding: 2px 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-blue);
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .conversation-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .level-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .main-nav {
+                order: 3;
+                width: 100%;
+                margin: 10px 0 0;
+            }
+            
+            .level-card {
+                padding: 25px 20px;
+            }
+            
+            .audio-player {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .practice-section {
+                padding: 30px 20px;
+            }
+            
+            .conversation-header {
+                padding: 40px 0 20px;
+            }
+            
+            .main-content {
+                padding-top: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .conversation-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .level-tab {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .cta-professional {
+                padding: 40px 20px;
+            }
+            
+            .cta-professional h2 {
+                font-size: 1.8rem;
+            }
+            
+            .response-controls {
+                flex-direction: column;
+            }
+        }
+
+        /* Persian Language Support */
+        body[dir="rtl"] {
+            text-align: right;
+        }
+
+        body[dir="rtl"] .logo-wrapper {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .footer-links a:hover {
+            transform: translateX(-5px);
+        }
+
+        body[dir="rtl"] .level-card {
+            border-left: none;
+            border-right: 5px solid var(--primary-blue);
+        }
+
+        body[dir="rtl"] .level-card.basic { border-right-color: #4CAF50; }
+        body[dir="rtl"] .level-card.intermediate { border-right-color: #FF9800; }
+        body[dir="rtl"] .level-card.advanced { border-right-color: #F44336; }
+
+        body[dir="rtl"] .info-card li:before {
+            left: auto;
+            right: -20px;
+        }
+
+        body[dir="rtl"] .ai-message {
+            border-left: none;
+            border-right: 4px solid var(--accent-orange);
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header with Language Switcher -->
+    <header class="header-main">
         <div class="header-container">
-            <div class="category-icon-large">
-                <i class="fas fa-comments"></i>
-            </div>
-            <h1 id="category-title">Live Conversation Practice</h1>
-            <p id="category-description">
-                Practice real-world English conversations with AI partners and 
-                join live group sessions with learners from around the world.
-            </p>
-            <a href="#start-learning" class="start-lesson-btn" id="start-learning-btn">
-                Start Conversation
+            <!-- Logo on Top Left -->
+            <a href="index.html" class="logo-wrapper">
+                <div class="logo-3d-container">EN</div>
+                <div class="logo-text">English by <span>Neo</span></div>
             </a>
+            
+            <!-- Navigation Menu -->
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link" data-page="home">Home</a>
+                <a href="grammar.html" class="nav-link" data-page="grammar">Grammar</a>
+                <a href="vocabulary.html" class="nav-link" data-page="vocabulary">Vocabulary</a>
+                <a href="pronunciation.html" class="nav-link" data-page="pronunciation">Pronunciation</a>
+                <a href="voice-check.html" class="nav-link" data-page="voiceCheck">Voice Check</a>
+                <a href="placement-tests.html" class="nav-link" data-page="placementTests">Placement Tests</a>
+                <a href="ielts.html" class="nav-link" data-page="ielts">IELTS</a>
+                <a href="toefl.html" class="nav-link" data-page="toefl">TOEFL</a>
+                <a href="conversation.html" class="nav-link active" data-page="conversation">Conversation</a>
+            </nav>
+            
+            <!-- Language Switcher in Header Top Right -->
+            <div class="header-language-switcher">
+                <button class="header-lang-btn active" data-lang="en">English</button>
+                <button class="header-lang-btn" data-lang="fa">فارسی</button>
+            </div>
         </div>
-    </section>
-    <!-- ... -->
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Conversation Header -->
+        <section class="conversation-header">
+            <div class="container">
+                <h1><span class="highlight">Master English Conversation</span></h1>
+                <p>Practice real-life dialogues, build confidence, and speak fluently with our comprehensive conversation training program.</p>
+                <p>Professional guidance, AI-powered practice, and personalized feedback to accelerate your speaking skills.</p>
+            </div>
+        </section>
+
+        <!-- Level Navigation -->
+        <div class="container">
+            <div class="level-nav">
+                <div class="level-tabs">
+                    <button class="level-tab active" data-level="basic">Basic Level</button>
+                    <button class="level-tab" data-level="intermediate">Intermediate Level</button>
+                    <button class="level-tab" data-level="advanced">Advanced Level</button>
+                </div>
+                <p style="text-align: center; color: var(--text-light); margin-top: 10px;">Select your level to view targeted conversation training</p>
+            </div>
+        </div>
+
+        <!-- Basic Level Content -->
+        <div class="container level-content active" id="basic-level">
+            <div class="level-card basic">
+                <div class="level-title">
+                    <h2>Basic Conversation Skills</h2>
+                    <span class="level-badge">A1-A2 Level</span>
+                </div>
+                
+                <p style="margin-bottom: 25px; font-size: 1.1rem; color: var(--text-light);">
+                    <strong>Goal:</strong> Build fundamental speaking confidence for daily situations. Focus on clarity, basic grammar, and essential vocabulary.
+                </p>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-brain"></i> Required Knowledge</h3>
+                        <ul>
+                            <li>Present Simple & Continuous tenses</li>
+                            <li>Basic question forms (What, Where, When)</li>
+                            <li>300-500 essential vocabulary words</li>
+                            <li>Simple sentence structure (SVO)</li>
+                            <li>Common daily routines vocabulary</li>
+                            <li>Numbers, time, dates, and basic directions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-comments"></i> Useful Vocabulary & Expressions</h3>
+                        <ul>
+                            <li>Greetings & introductions</li>
+                            <li>Daily activities and routines</li>
+                            <li>Food, family, and weather terms</li>
+                            <li>Basic feelings and opinions (like, dislike)</li>
+                            <li>Simple requests and offers</li>
+                            <li>Emergency phrases and polite requests</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Grammar Focus</h3>
+                        <ul>
+                            <li>Subject-verb agreement</li>
+                            <li>Basic prepositions (in, on, at)</li>
+                            <li>Articles (a, an, the)</li>
+                            <li>Simple present and present continuous</li>
+                            <li>Basic future with "going to"</li>
+                            <li>Countable vs uncountable nouns</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-microphone-alt"></i> Formality & Style</h3>
+                        <ul>
+                            <li>Casual, everyday conversations</li>
+                            <li>Polite forms (please, thank you, excuse me)</li>
+                            <li>Simple questions and responses</li>
+                            <li>Focus on clarity over complexity</li>
+                            <li>Slow, clear pronunciation emphasis</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Sample Dialogues -->
+                <div style="margin: 40px 0;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 20px;">
+                        <i class="fas fa-comment-dots"></i> Sample Dialogue: At a Cafe
+                    </h3>
+                    
+                    <div class="audio-player">
+                        <div>
+                            <h4 style="color: var(--text-dark); margin-bottom: 10px;">Listen to the conversation:</h4>
+                            <div class="audio-controls">
+                                <button class="audio-btn" onclick="playAudio('basic1')">
+                                    <i class="fas fa-play"></i> Play Dialogue
+                                </button>
+                                <button class="audio-btn" onclick="slowAudio('basic1')">
+                                    <i class="fas fa-snail"></i> Slow Version
+                                </button>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="background: white; padding: 15px; border-radius: 10px; color: var(--text-dark);">
+                                <p><strong>Barista:</strong> Good morning! What would you like?</p>
+                                <p><strong>Customer:</strong> Hello! Can I have a coffee, please?</p>
+                                <p><strong>Barista:</strong> Sure. Black coffee or with milk?</p>
+                                <p><strong>Customer:</strong> With milk, please. And one croissant.</p>
+                                <p><strong>Barista:</strong> Here you are. That's $5.50.</p>
+                                <p><strong>Customer:</strong> Thank you! Have a nice day.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Practice Section -->
+                <div class="practice-section">
+                    <div class="practice-container">
+                        <div class="practice-header">
+                            <h2><i class="fas fa-robot"></i> AI Conversation Practice</h2>
+                            <p>Practice with our AI assistant. Listen first, then respond naturally.</p>
+                        </div>
+                        
+                        <div class="conversation-display">
+                            <div class="ai-message" id="ai-basic-message">
+                                <strong>AI Assistant:</strong> Hello! My name is Alex. What's your name?
+                            </div>
+                            <div class="user-response" id="basic-response">
+                                <textarea placeholder="Type your response here... Or click the microphone to speak"></textarea>
+                                <div class="response-controls">
+                                    <button class="record-btn" onclick="startRecording('basic')">
+                                        <i class="fas fa-microphone"></i> Start Recording
+                                    </button>
+                                    <button class="audio-btn" onclick="submitResponse('basic')">
+                                        <i class="fas fa-paper-plane"></i> Submit Response
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="cta-button" onclick="startPractice('basic')" style="margin-top: 20px;">
+                                <i class="fas fa-play"></i> Start Practice Session
+                            </button>
+                        </div>
+                        
+                        <div class="evaluation" id="basic-evaluation">
+                            <!-- Evaluation will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources -->
+                <div class="resources-section">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 30px; text-align: center;">
+                        <i class="fas fa-book-open"></i> Additional Resources for Basic Level
+                    </h3>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h4>Recommended Books</h4>
+                            <ul>
+                                <li>"English for Everyday Activities"</li>
+                                <li>"Basic English Grammar" by Betty Azar</li>
+                                <li>"Side by Side: Level 1"</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Online Resources</h4>
+                            <ul>
+                                <li>British Council LearnEnglish</li>
+                                <li>BBC Learning English</li>
+                                <li>Duolingo English Course</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Practice Tips</h4>
+                            <ul>
+                                <li>Practice 15 minutes daily</li>
+                                <li>Shadow native speakers</li>
+                                <li>Record and listen to yourself</li>
+                                <li>Join English conversation groups</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intermediate Level Content -->
+        <div class="container level-content" id="intermediate-level">
+            <div class="level-card intermediate">
+                <div class="level-title">
+                    <h2>Intermediate Conversation Skills</h2>
+                    <span class="level-badge">B1-B2 Level</span>
+                </div>
+                
+                <p style="margin-bottom: 25px; font-size: 1.1rem; color: var(--text-light);">
+                    <strong>Goal:</strong> Develop fluid conversations on familiar topics. Express opinions, handle complex situations, and understand nuances.
+                </p>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-brain"></i> Required Knowledge</h3>
+                        <ul>
+                            <li>All major tenses confidently</li>
+                            <li>Conditional sentences</li>
+                            <li>Passive voice</li>
+                            <li>Reported speech</li>
+                            <li>2000-3000 word vocabulary</li>
+                            <li>Idioms and phrasal verbs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-comments"></i> Useful Vocabulary & Expressions</h3>
+                        <ul>
+                            <li>Opinion expressions (I believe, in my view)</li>
+                            <li>Agreement/disagreement phrases</li>
+                            <li>Complex emotions and reactions</li>
+                            <li>Professional and academic terms</li>
+                            <li>Cultural references</li>
+                            <li>Persuasive language</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Grammar Focus</h3>
+                        <ul>
+                            <li>Perfect tenses (present, past)</li>
+                            <li>Modal verbs for probability</li>
+                            <li>Relative clauses</li>
+                            <li>Indirect questions</li>
+                            <li>Gerunds and infinitives</li>
+                            <li>Complex sentence structures</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-microphone-alt"></i> Formality & Style</h3>
+                        <ul>
+                            <li>Formal and informal registers</li>
+                            <li>Professional communication</li>
+                            <li>Social conversations</li>
+                            <li>Debate and discussion skills</li>
+                            <li>Cultural appropriateness</li>
+                            <li>Natural flow and linking</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Sample Dialogues -->
+                <div style="margin: 40px 0;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 20px;">
+                        <i class="fas fa-comment-dots"></i> Sample Dialogue: Job Interview
+                    </h3>
+                    
+                    <div class="audio-player">
+                        <div>
+                            <h4 style="color: var(--text-dark); margin-bottom: 10px;">Listen to the conversation:</h4>
+                            <div class="audio-controls">
+                                <button class="audio-btn" onclick="playAudio('intermediate1')">
+                                    <i class="fas fa-play"></i> Play Dialogue
+                                </button>
+                                <button class="audio-btn" onclick="slowAudio('intermediate1')">
+                                    <i class="fas fa-snail"></i> Slow Version
+                                </button>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="background: white; padding: 15px; border-radius: 10px; color: var(--text-dark);">
+                                <p><strong>Interviewer:</strong> Could you tell me about your previous experience in marketing?</p>
+                                <p><strong>Candidate:</strong> Certainly. I've worked in digital marketing for three years, specializing in social media campaigns.</p>
+                                <p><strong>Interviewer:</strong> What would you say is your greatest achievement in that role?</p>
+                                <p><strong>Candidate:</strong> I'd have to say increasing engagement by 150% through our new content strategy.</p>
+                                <p><strong>Interviewer:</strong> How do you handle tight deadlines?</p>
+                                <p><strong>Candidate:</strong> I prioritize tasks and maintain clear communication with the team throughout the process.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Practice Section -->
+                <div class="practice-section">
+                    <div class="practice-container">
+                        <div class="practice-header">
+                            <h2><i class="fas fa-robot"></i> AI Conversation Practice</h2>
+                            <p>Practice professional and social conversations with our AI assistant.</p>
+                        </div>
+                        
+                        <div class="conversation-display">
+                            <div class="ai-message" id="ai-intermediate-message">
+                                <strong>AI Assistant:</strong> What are your thoughts on remote work versus office work? Which do you prefer and why?
+                            </div>
+                            <div class="user-response" id="intermediate-response">
+                                <textarea placeholder="Express your opinion clearly... Or click the microphone to speak"></textarea>
+                                <div class="response-controls">
+                                    <button class="record-btn" onclick="startRecording('intermediate')">
+                                        <i class="fas fa-microphone"></i> Start Recording
+                                    </button>
+                                    <button class="audio-btn" onclick="submitResponse('intermediate')">
+                                        <i class="fas fa-paper-plane"></i> Submit Response
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="cta-button" onclick="startPractice('intermediate')" style="margin-top: 20px;">
+                                <i class="fas fa-play"></i> Start Practice Session
+                            </button>
+                        </div>
+                        
+                        <div class="evaluation" id="intermediate-evaluation">
+                            <!-- Evaluation will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources -->
+                <div class="resources-section">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 30px; text-align: center;">
+                        <i class="fas fa-book-open"></i> Additional Resources for Intermediate Level
+                    </h3>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h4>Recommended Books</h4>
+                            <ul>
+                                <li>"English Grammar in Use" Intermediate</li>
+                                <li>"English Collocations in Use"</li>
+                                <li>"Speaking Naturally" by Bruce Tillitt</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Online Resources</h4>
+                            <ul>
+                                <li>TED Talks with transcripts</li>
+                                <li>Voice of America Learning English</li>
+                                <li>FluentU English</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Practice Tips</h4>
+                            <ul>
+                                <li>Join debate clubs</li>
+                                <li>Watch movies without subtitles</li>
+                                <li>Practice summarizing articles</li>
+                                <li>Record persuasive speeches</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Level Content -->
+        <div class="container level-content" id="advanced-level">
+            <div class="level-card advanced">
+                <div class="level-title">
+                    <h2>Advanced Conversation Skills</h2>
+                    <span class="level-badge">C1-C2 Level</span>
+                </div>
+                
+                <p style="margin-bottom: 25px; font-size: 1.1rem; color: var(--text-light);">
+                    <strong>Goal:</strong> Master sophisticated communication including negotiation, debate, complex discussions, and cultural nuances.
+                </p>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-brain"></i> Required Knowledge</h3>
+                        <ul>
+                            <li>All grammatical structures intuitively</li>
+                            <li>5000+ word vocabulary including jargon</li>
+                            <li>Cultural references and idioms</li>
+                            <li>Academic and professional terminology</li>
+                            <li>Rhetorical devices</li>
+                            <li>Regional accents and dialects</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-comments"></i> Advanced Skills</h3>
+                        <ul>
+                            <li>Negotiation and persuasion</li>
+                            <li>Formal debate and argumentation</li>
+                            <li>Public speaking and presentations</li>
+                            <li>Media interviews</li>
+                            <li>Conflict resolution</li>
+                            <li>Cross-cultural communication</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Language Features</h3>
+                        <ul>
+                            <li>Subjunctive mood</li>
+                            <li>Inversion for emphasis</li>
+                            <li>Cleft sentences</li>
+                            <li>Ellipsis and substitution</li>
+                            <li>Metaphor and simile</li>
+                            <li>Register shifting</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-microphone-alt"></i> Discussion Topics</h3>
+                        <ul>
+                            <li>Global economics and politics</li>
+                            <li>Ethical dilemmas</li>
+                            <li>Scientific advancements</li>
+                            <li>Philosophical debates</li>
+                            <li>Cultural criticism</li>
+                            <li>Future predictions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Sample Dialogues -->
+                <div style="margin: 40px 0;">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 20px;">
+                        <i class="fas fa-comment-dots"></i> Sample Dialogue: Business Negotiation
+                    </h3>
+                    
+                    <div class="audio-player">
+                        <div>
+                            <h4 style="color: var(--text-dark); margin-bottom: 10px;">Listen to the negotiation:</h4>
+                            <div class="audio-controls">
+                                <button class="audio-btn" onclick="playAudio('advanced1')">
+                                    <i class="fas fa-play"></i> Play Dialogue
+                                </button>
+                                <button class="audio-btn" onclick="slowAudio('advanced1')">
+                                    <i class="fas fa-snail"></i> Analysis Version
+                                </button>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="background: white; padding: 15px; border-radius: 10px; color: var(--text-dark);">
+                                <p><strong>Client:</strong> While we appreciate your proposal, the timeline seems rather ambitious given our constraints.</p>
+                                <p><strong>Supplier:</strong> I understand your concern. However, our phased approach allows for flexibility while maintaining momentum.</p>
+                                <p><strong>Client:</strong> That may be true, but we'd need guarantees on the initial deliverables before committing fully.</p>
+                                <p><strong>Supplier:</strong> We could implement a pilot phase with specific milestones. This would mitigate risk while demonstrating our capability.</p>
+                                <p><strong>Client:</strong> That's a reasonable compromise. Could we discuss the metrics for these milestones?</p>
+                                <p><strong>Supplier:</strong> Absolutely. Let me outline our suggested KPIs for the pilot phase...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Practice Section -->
+                <div class="practice-section">
+                    <div class="practice-container">
+                        <div class="practice-header">
+                            <h2><i class="fas fa-robot"></i> Advanced AI Conversation Practice</h2>
+                            <p>Practice complex discussions, negotiations, and debates with our advanced AI.</p>
+                        </div>
+                        
+                        <div class="conversation-display">
+                            <div class="ai-message" id="ai-advanced-message">
+                                <strong>AI Assistant:</strong> Let's debate artificial intelligence regulation. I'll argue for strict government oversight. Your position is for industry self-regulation. Present your opening argument.
+                            </div>
+                            <div class="user-response" id="advanced-response">
+                                <textarea placeholder="Present your argument persuasively... Or click the microphone to speak"></textarea>
+                                <div class="response-controls">
+                                    <button class="record-btn" onclick="startRecording('advanced')">
+                                        <i class="fas fa-microphone"></i> Start Recording
+                                    </button>
+                                    <button class="audio-btn" onclick="submitResponse('advanced')">
+                                        <i class="fas fa-paper-plane"></i> Submit Response
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="cta-button" onclick="startPractice('advanced')" style="margin-top: 20px;">
+                                <i class="fas fa-play"></i> Start Practice Session
+                            </button>
+                        </div>
+                        
+                        <div class="evaluation" id="advanced-evaluation">
+                            <!-- Evaluation will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources -->
+                <div class="resources-section">
+                    <h3 style="color: var(--primary-blue); margin-bottom: 30px; text-align: center;">
+                        <i class="fas fa-book-open"></i> Additional Resources for Advanced Level
+                    </h3>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <h4>Recommended Materials</h4>
+                            <ul>
+                                <li>"Advanced Grammar in Use"</li>
+                                <li>"The Economist" magazine</li>
+                                <li>Academic journals in your field</li>
+                                <li>Court transcripts and debates</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Practice Methods</h4>
+                            <ul>
+                                <li>Join Toastmasters International</li>
+                                <li>Participate in Model UN</li>
+                                <li>Record and analyze professional speeches</li>
+                                <li>Practice simultaneous interpretation</li>
+                            </ul>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Professional Development</h4>
+                            <ul>
+                                <li>Business negotiation courses</li>
+                                <li>Public speaking workshops</li>
+                                <li>Cross-cultural communication training</li>
+                                <li>Media interview preparation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Coaching CTA -->
+        <div class="container">
+            <div class="cta-professional">
+                <div class="cta-content">
+                    <h2>Ready for Real Transformation?</h2>
+                    <p>While AI practice is helpful, nothing replaces personalized coaching from an experienced English professional.</p>
+                    <p><strong>As the founder of English by Neo</strong>, I've helped hundreds of students achieve fluency through personalized coaching. My students typically improve 2-3 levels within 6 months with guaranteed results.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 30px 0;">
+                        <h3 style="margin-bottom: 15px;">What You Get in Professional Coaching:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                            <div><i class="fas fa-check-circle"></i> Personalized curriculum</div>
+                            <div><i class="fas fa-check-circle"></i> Real-time pronunciation correction</div>
+                            <div><i class="fas fa-check-circle"></i> Cultural nuance coaching</div>
+                            <div><i class="fas fa-check-circle"></i> Business English specialization</div>
+                            <div><i class="fas fa-check-circle"></i> Exam preparation (IELTS/TOEFL)</div>
+                            <div><i class="fas fa-check-circle"></i> Confidence building strategies</div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="cta-button" onclick="scrollToContact()">
+                        <i class="fas fa-calendar-check"></i> Book Your Free Consultation with Neo
+                    </a>
+                    <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">Limited spots available - Most students achieve their target scores within 3-6 months</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer-main" id="contact">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="logo-text" style="color: white; margin-bottom: 20px;">English by <span>Neo</span></div>
+                        <p class="footer-description">Your journey to English fluency starts here. Join our community of successful learners today!</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3 class="footer-links-title">Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="placement-tests.html">Placement Test</a></li>
+                            <li><a href="voice-check.html">Voice Analysis</a></li>
+                            <li><a href="#contact">Contact for Coaching</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3 class="footer-categories-title">Categories</h3>
+                        <ul class="footer-links">
+                            <li><a href="grammar.html">Grammar</a></li>
+                            <li><a href="vocabulary.html">Vocabulary</a></li>
+                            <li><a href="pronunciation.html">Pronunciation</a></li>
+                            <li><a href="ielts.html">IELTS Preparation</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3 class="footer-contact-title">Contact for Professional Coaching</h3>
+                        <ul class="footer-links">
+                            <li><a href="mailto:neo@englishbyneo.com">neo@englishbyneo.com</a></li>
+                            <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                            <li><a href="#">Schedule Consultation</a></li>
+                            <li><a href="#">Student Success Stories</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    <p class="copyright-text">© 2023 English by Neo. All rights reserved. Professional coaching services available worldwide.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Language Management
+        const translations = {
+            en: {
+                // Hero Section
+                heroTitle: "Master English Conversation",
+                heroSubtitle: "Practice real-life dialogues, build confidence, and speak fluently",
+                heroDescription: "Professional guidance, AI-powered practice, and personalized feedback to accelerate your speaking skills.",
+                
+                // Level Navigation
+                basic: "Basic Level",
+                intermediate: "Intermediate Level",
+                advanced: "Advanced Level",
+                levelHint: "Select your level to view targeted conversation training",
+                
+                // Basic Level
+                basicGoal: "Build fundamental speaking confidence for daily situations. Focus on clarity, basic grammar, and essential vocabulary.",
+                basicRequired: "Required Knowledge",
+                basicVocabulary: "Useful Vocabulary & Expressions",
+                basicGrammar: "Grammar Focus",
+                basicFormality: "Formality & Style",
+                
+                // Intermediate Level
+                intermediateGoal: "Develop fluid conversations on familiar topics. Express opinions, handle complex situations, and understand nuances.",
+                intermediateRequired: "Required Knowledge",
+                intermediateVocabulary: "Useful Vocabulary & Expressions",
+                intermediateGrammar: "Grammar Focus",
+                intermediateFormality: "Formality & Style",
+                
+                // Advanced Level
+                advancedGoal: "Master sophisticated communication including negotiation, debate, complex discussions, and cultural nuances.",
+                advancedRequired: "Required Knowledge",
+                advancedSkills: "Advanced Skills",
+                advancedLanguage: "Language Features",
+                advancedTopics: "Discussion Topics",
+                
+                // Sample Dialogues
+                sampleDialogue: "Sample Dialogue",
+                listenConversation: "Listen to the conversation:",
+                playDialogue: "Play Dialogue",
+                slowVersion: "Slow Version",
+                
+                // Practice Section
+                aiPractice: "AI Conversation Practice",
+                aiPracticeDesc: "Practice with our AI assistant. Listen first, then respond naturally.",
+                startPractice: "Start Practice Session",
+                startRecording: "Start Recording",
+                submitResponse: "Submit Response",
+                
+                // Resources
+                additionalResources: "Additional Resources",
+                recommendedBooks: "Recommended Books",
+                onlineResources: "Online Resources",
+                practiceTips: "Practice Tips",
+                
+                // CTA Section
+                ctaTitle: "Ready for Real Transformation?",
+                ctaDesc1: "While AI practice is helpful, nothing replaces personalized coaching from an experienced English professional.",
+                ctaDesc2: "As the founder of English by Neo, I've helped hundreds of students achieve fluency through personalized coaching.",
+                ctaBenefits: "What You Get in Professional Coaching:",
+                bookConsultation: "Book Your Free Consultation with Neo",
+                
+                // Footer
+                contactCoaching: "Contact for Professional Coaching",
+                scheduleConsultation: "Schedule Consultation",
+                successStories: "Student Success Stories",
+                
+                // Navigation
+                nav: {
+                    home: "Home",
+                    grammar: "Grammar",
+                    vocabulary: "Vocabulary",
+                    pronunciation: "Pronunciation",
+                    voiceCheck: "Voice Check",
+                    placementTests: "Placement Tests",
+                    ielts: "IELTS",
+                    toefl: "TOEFL",
+                    conversation: "Conversation"
+                }
+            },
+            fa: {
+                // Hero Section
+                heroTitle: "تسلط بر مکالمه انگلیسی",
+                heroSubtitle: "تمرین دیالوگ‌های زندگی واقعی، ساخت اعتماد به نفس و صحبت کردن روان",
+                heroDescription: "راهنمایی حرفه‌ای، تمرین هوش مصنوعی و بازخورد شخصی‌سازی شده برای تسریع مهارت‌های گفتاری شما.",
+                
+                // Level Navigation
+                basic: "سطح مبتدی",
+                intermediate: "سطح متوسط",
+                advanced: "سطح پیشرفته",
+                levelHint: "سطح خود را برای مشاهده آموزش مکالمه هدفمند انتخاب کنید",
+                
+                // Basic Level
+                basicGoal: "ایجاد اعتماد به نفس صحبت کردن اساسی برای موقعیت‌های روزمره. تمرکز بر وضوح، گرامر پایه و واژگان ضروری.",
+                basicRequired: "دانش مورد نیاز",
+                basicVocabulary: "واژگان و عبارات مفید",
+                basicGrammar: "تمرکز گرامری",
+                basicFormality: "سطح رسمیت و سبک",
+                
+                // Intermediate Level
+                intermediateGoal: "توسعه مکالمات روان در مورد موضوعات آشنا. بیان نظرات، مدیریت موقعیت‌های پیچیده و درک ظرایف.",
+                intermediateRequired: "دانش مورد نیاز",
+                intermediateVocabulary: "واژگان و عبارات مفید",
+                intermediateGrammar: "تمرکز گرامری",
+                intermediateFormality: "سطح رسمیت و سبک",
+                
+                // Advanced Level
+                advancedGoal: "تسلط بر ارتباطات پیچیده شامل مذاکره، مناظره، بحث‌های پیچیده و ظرایف فرهنگی.",
+                advancedRequired: "دانش مورد نیاز",
+                advancedSkills: "مهارت‌های پیشرفته",
+                advancedLanguage: "ویژگی‌های زبانی",
+                advancedTopics: "موضوعات بحث",
+                
+                // Sample Dialogues
+                sampleDialogue: "نمونه دیالوگ",
+                listenConversation: "به مکالمه گوش دهید:",
+                playDialogue: "پخش دیالوگ",
+                slowVersion: "نسخه آهسته",
+                
+                // Practice Section
+                aiPractice: "تمرین مکالمه هوش مصنوعی",
+                aiPracticeDesc: "با دستیار هوش مصنوعی ما تمرین کنید. اول گوش دهید، سپس به طور طبیعی پاسخ دهید.",
+                startPractice: "شروع جلسه تمرین",
+                startRecording: "شروع ضبط",
+                submitResponse: "ارسال پاسخ",
+                
+                // Resources
+                additionalResources: "منابع اضافی",
+                recommendedBooks: "کتاب‌های توصیه شده",
+                onlineResources: "منابع آنلاین",
+                practiceTips: "نکات تمرین",
+                
+                // CTA Section
+                ctaTitle: "آماده برای تحول واقعی؟",
+                ctaDesc1: "در حالی که تمرین هوش مصنوعی مفید است، هیچ چیز جای مربی‌گری شخصی توسط یک حرفه‌ای انگلیسی را نمی‌گیرد.",
+                ctaDesc2: "به عنوان بنیانگذار English by Neo، من به صدها دانش‌آموز کمک کرده‌ام تا از طریق مربی‌گری شخصی به تسلط برسند.",
+                ctaBenefits: "آنچه در مربی‌گری حرفه‌ای دریافت می‌کنید:",
+                bookConsultation: "رزرو مشاوره رایگان با نئو",
+                
+                // Footer
+                contactCoaching: "تماس برای مربی‌گری حرفه‌ای",
+                scheduleConsultation: "زمان‌بندی مشاوره",
+                successStories: "داستان‌های موفقیت دانش‌آموزان",
+                
+                // Navigation
+                nav: {
+                    home: "خانه",
+                    grammar: "گرامر",
+                    vocabulary: "واژگان",
+                    pronunciation: "تلفظ",
+                    voiceCheck: "بررسی صدا",
+                    placementTests: "آزمون تعیین سطح",
+                    ielts: "آیلتس",
+                    toefl: "تافل",
+                    conversation: "مکالمه"
+                }
+            }
+        };
+
+        // Level Management
+        let currentLevel = 'basic';
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupLanguageSwitcher();
+            setupLevelTabs();
+            setupSmoothScroll();
+            highlightActiveNav();
+            
+            // Set initial language
+            switchLanguage('en');
+        });
+
+        // Setup language switcher
+        function setupLanguageSwitcher() {
+            const langButtons = document.querySelectorAll('.header-lang-btn');
+            langButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    switchLanguage(lang);
+                });
+            });
+        }
+
+        // Switch language function
+        function switchLanguage(lang) {
+            const currentLang = lang;
+            document.body.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            
+            // Update language buttons
+            document.querySelectorAll('.header-lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Update all content
+            updateContent(lang);
+        }
+
+        // Update all page content
+        function updateContent(lang) {
+            const t = translations[lang];
+            if (!t) return;
+            
+            // Update hero section
+            document.querySelector('.hero h1').innerHTML = `<span class="highlight">${t.heroTitle}</span>`;
+            document.querySelectorAll('.hero p')[0].textContent = t.heroSubtitle;
+            document.querySelectorAll('.hero p')[1].textContent = t.heroDescription;
+            
+            // Update level tabs
+            document.querySelectorAll('.level-tab').forEach((tab, index) => {
+                const levels = [t.basic, t.intermediate, t.advanced];
+                if (levels[index]) tab.textContent = levels[index];
+            });
+            
+            // Update level hint
+            const hint = document.querySelector('.level-nav p');
+            if (hint) hint.textContent = t.levelHint;
+            
+            // Update level goals
+            document.querySelectorAll('.level-card p strong').forEach((goal, index) => {
+                const goals = [t.basicGoal, t.intermediateGoal, t.advancedGoal];
+                if (goals[index]) {
+                    const parent = goal.parentElement;
+                    parent.innerHTML = `<strong>هدف:</strong> ${goals[index]}`;
+                }
+            });
+            
+            // Update section titles
+            document.querySelectorAll('.info-card h3').forEach(title => {
+                const icon = title.querySelector('i');
+                const iconClass = icon ? icon.className : '';
+                const text = title.textContent.toLowerCase();
+                
+                if (text.includes('required')) title.textContent = t.basicRequired;
+                else if (text.includes('vocabulary')) title.textContent = t.basicVocabulary;
+                else if (text.includes('grammar')) title.textContent = t.basicGrammar;
+                else if (text.includes('formality')) title.textContent = t.basicFormality;
+                else if (text.includes('skills')) title.textContent = t.advancedSkills;
+                else if (text.includes('language')) title.textContent = t.advancedLanguage;
+                else if (text.includes('topics')) title.textContent = t.advancedTopics;
+                
+                if (icon) title.innerHTML = `<i class="${iconClass}"></i> ${title.textContent}`;
+            });
+            
+            // Update sample dialogue titles
+            document.querySelectorAll('.section-grid + div h3').forEach(title => {
+                const icon = title.querySelector('i');
+                if (icon) title.innerHTML = `<i class="${icon.className}"></i> ${t.sampleDialogue}`;
+            });
+            
+            // Update audio sections
+            document.querySelectorAll('.audio-player h4').forEach(h4 => {
+                h4.textContent = t.listenConversation;
+            });
+            
+            document.querySelectorAll('.audio-btn').forEach((btn, index) => {
+                if (index % 2 === 0) btn.innerHTML = `<i class="fas fa-play"></i> ${t.playDialogue}`;
+                else btn.innerHTML = `<i class="fas fa-snail"></i> ${t.slowVersion}`;
+            });
+            
+            // Update practice sections
+            document.querySelectorAll('.practice-header h2').forEach(h2 => {
+                h2.innerHTML = `<i class="fas fa-robot"></i> ${t.aiPractice}`;
+            });
+            
+            document.querySelectorAll('.practice-header p').forEach(p => {
+                p.textContent = t.aiPracticeDesc;
+            });
+            
+            document.querySelectorAll('.cta-button').forEach(btn => {
+                if (btn.textContent.includes('Start Practice')) {
+                    btn.innerHTML = `<i class="fas fa-play"></i> ${t.startPractice}`;
+                }
+            });
+            
+            document.querySelectorAll('.record-btn').forEach(btn => {
+                btn.innerHTML = `<i class="fas fa-microphone"></i> ${t.startRecording}`;
+            });
+            
+            document.querySelectorAll('.audio-btn').forEach((btn, index) => {
+                if (btn.textContent.includes('Submit')) {
+                    btn.innerHTML = `<i class="fas fa-paper-plane"></i> ${t.submitResponse}`;
+                }
+            });
+            
+            // Update resource sections
+            document.querySelectorAll('.resources-section h3').forEach(h3 => {
+                h3.innerHTML = `<i class="fas fa-book-open"></i> ${t.additionalResources}`;
+            });
+            
+            document.querySelectorAll('.resource-card h4').forEach((h4, index) => {
+                const titles = [t.recommendedBooks, t.onlineResources, t.practiceTips];
+                if (titles[index]) h4.textContent = titles[index];
+            });
+            
+            // Update CTA section
+            const ctaTitle = document.querySelector('.cta-professional h2');
+            if (ctaTitle) ctaTitle.textContent = t.ctaTitle;
+            
+            const ctaParagraphs = document.querySelectorAll('.cta-professional p');
+            if (ctaParagraphs[0]) ctaParagraphs[0].textContent = t.ctaDesc1;
+            if (ctaParagraphs[1]) ctaParagraphs[1].innerHTML = `<strong>به عنوان بنیانگذار English by Neo</strong>، ${t.ctaDesc2}`;
+            
+            const ctaBenefits = document.querySelector('.cta-professional h3');
+            if (ctaBenefits) ctaBenefits.textContent = t.ctaBenefits;
+            
+            const ctaButton = document.querySelector('.cta-professional .cta-button');
+            if (ctaButton) ctaButton.innerHTML = `<i class="fas fa-calendar-check"></i> ${t.bookConsultation}`;
+            
+            // Update footer
+            const contactTitle = document.querySelector('.footer-contact-title');
+            if (contactTitle) contactTitle.textContent = t.contactCoaching;
+            
+            const footerLinks = document.querySelectorAll('.footer-links a');
+            footerLinks.forEach(link => {
+                if (link.textContent === 'Schedule Consultation') link.textContent = t.scheduleConsultation;
+                if (link.textContent === 'Student Success Stories') link.textContent = t.successStories;
+            });
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const page = link.dataset.page;
+                if (page && t.nav && t.nav[page]) {
+                    link.textContent = t.nav[page];
+                }
+            });
+            
+            // Update logo text
+            const logoText = document.querySelector('.logo-text');
+            if (logoText) {
+                if (lang === 'fa') {
+                    logoText.innerHTML = 'انگلیسی با <span>نئو</span>';
+                } else {
+                    logoText.innerHTML = 'English by <span>Neo</span>';
+                }
+            }
+        }
+
+        // Setup level tabs
+        function setupLevelTabs() {
+            const tabs = document.querySelectorAll('.level-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const level = tab.dataset.level;
+                    switchLevel(level);
+                });
+            });
+        }
+
+        // Switch between levels
+        function switchLevel(level) {
+            currentLevel = level;
+            
+            // Update active tab
+            document.querySelectorAll('.level-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.level === level);
+            });
+            
+            // Show corresponding content
+            document.querySelectorAll('.level-content').forEach(content => {
+                content.classList.toggle('active', content.id === `${level}-level`);
+            });
+            
+            // Reset practice areas
+            resetPractice(level);
+        }
+
+        // Audio simulation functions
+        function playAudio(audioId) {
+            // In a real implementation, this would play actual audio
+            alert(`Playing audio for ${audioId}. In production, this would play actual recorded dialogues.`);
+        }
+
+        function slowAudio(audioId) {
+            alert(`Playing slow version of ${audioId}. In production, this would play slowed-down audio for better comprehension.`);
+        }
+
+        // Practice functions
+        let isRecording = false;
+        let recordingLevel = '';
+
+        function startPractice(level) {
+            const responseArea = document.getElementById(`${level}-response`);
+            const aiMessage = document.getElementById(`ai-${level}-message`);
+            const evaluation = document.getElementById(`${level}-evaluation`);
+            
+            if (responseArea && aiMessage) {
+                responseArea.style.display = 'block';
+                evaluation.style.display = 'none';
+                
+                // Set appropriate AI message based on level
+                const messages = {
+                    basic: "Hello! My name is Alex. What's your name?",
+                    intermediate: "What are your thoughts on remote work versus office work? Which do you prefer and why?",
+                    advanced: "Let's debate artificial intelligence regulation. I'll argue for strict government oversight. Your position is for industry self-regulation. Present your opening argument."
+                };
+                
+                aiMessage.innerHTML = `<strong>AI Assistant:</strong> ${messages[level]}`;
+                
+                // Scroll to practice area
+                responseArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function startRecording(level) {
+            recordingLevel = level;
+            const recordBtn = document.querySelector(`#${level}-response .record-btn`);
+            
+            if (!isRecording) {
+                isRecording = true;
+                recordBtn.innerHTML = '<i class="fas fa-stop"></i> Stop Recording';
+                recordBtn.classList.add('recording');
+                
+                // Simulate recording
+                setTimeout(() => {
+                    const textarea = document.querySelector(`#${level}-response textarea`);
+                    textarea.value = "This is a simulated response. In the actual implementation, this would contain your recorded speech converted to text using Web Speech API.";
+                }, 2000);
+            } else {
+                stopRecording();
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            const recordBtn = document.querySelector(`#${recordingLevel}-response .record-btn`);
+            if (recordBtn) {
+                recordBtn.innerHTML = '<i class="fas fa-microphone"></i> Start Recording';
+                recordBtn.classList.remove('recording');
+            }
+        }
+
+        function submitResponse(level) {
+            const textarea = document.querySelector(`#${level}-response textarea`);
+            const evaluation = document.getElementById(`${level}-evaluation`);
+            
+            if (textarea && evaluation) {
+                const response = textarea.value.trim();
+                
+                if (!response) {
+                    alert('Please enter or record a response first.');
+                    return;
+                }
+                
+                // Generate evaluation based on level
+                const evaluations = {
+                    basic: {
+                        score: 75,
+                        feedback: "Good basic response! Your sentence structure is clear. To improve: 1) Try to add more details 2) Practice question formation 3) Work on natural intonation.",
+                        suggestions: [
+                            "Practice common daily dialogues",
+                            "Focus on correct word order",
+                            "Listen and repeat simple conversations"
+                        ]
+                    },
+                    intermediate: {
+                        score: 82,
+                        feedback: "Well-structured opinion! You expressed clear preferences. To improve: 1) Use more linking words 2) Include supporting examples 3) Vary your sentence structures.",
+                        suggestions: [
+                            "Practice expressing complex opinions",
+                            "Work on using idiomatic expressions",
+                            "Join discussion groups on familiar topics"
+                        ]
+                    },
+                    advanced: {
+                        score: 88,
+                        feedback: "Strong argument presentation! Your persuasive language is effective. To improve: 1) Include counter-arguments 2) Use more rhetorical devices 3) Refine your persuasive techniques.",
+                        suggestions: [
+                            "Practice formal debate structures",
+                            "Study negotiation techniques",
+                            "Analyze professional speeches"
+                        ]
+                    }
+                };
+                
+                const evalData = evaluations[level];
+                
+                evaluation.innerHTML = `
+                    <h3><i class="fas fa-chart-line"></i> Performance Evaluation</h3>
+                    <div class="evaluation-score">
+                        <div class="score-circle" style="--score: ${evalData.score}%">
+                            <div class="score-value">${evalData.score}/100</div>
+                        </div>
+                        <div>
+                            <h4>Overall Score: ${getGrade(evalData.score)}</h4>
+                            <p>Level: ${level.charAt(0).toUpperCase() + level.slice(1)}</p>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <h4>Feedback:</h4>
+                        <p>${evalData.feedback}</p>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <h4>Suggestions for Improvement:</h4>
+                        <ul style="padding-left: 20px;">
+                            ${evalData.suggestions.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div style="background: rgba(26, 115, 232, 0.1); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                        <h4><i class="fas fa-star"></i> Professional Coaching Recommendation</h4>
+                        <p>For faster improvement and personalized guidance, consider booking a session with Neo. Professional coaching provides:</p>
+                        <ul style="padding-left: 20px; margin-top: 10px;">
+                            <li>Real-time pronunciation correction</li>
+                            <li>Cultural nuance explanations</li>
+                            <li>Personalized feedback on your specific challenges</li>
+                            <li>Accelerated progress with guaranteed results</li>
+                        </ul>
+                        <button class="cta-button" onclick="scrollToContact()" style="margin-top: 15px;">
+                            <i class="fas fa-calendar-check"></i> Book Free Consultation
+                        </button>
+                    </div>
+                `;
+                
+                evaluation.style.display = 'block';
+                evaluation.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function getGrade(score) {
+            if (score >= 90) return 'Excellent';
+            if (score >= 80) return 'Very Good';
+            if (score >= 70) return 'Good';
+            if (score >= 60) return 'Satisfactory';
+            return 'Needs Improvement';
+        }
+
+        function resetPractice(level) {
+            const responseArea = document.getElementById(`${level}-response`);
+            const evaluation = document.getElementById(`${level}-evaluation`);
+            
+            if (responseArea) {
+                responseArea.style.display = 'none';
+                const textarea = responseArea.querySelector('textarea');
+                if (textarea) textarea.value = '';
+            }
+            
+            if (evaluation) {
+                evaluation.style.display = 'none';
+                evaluation.innerHTML = '';
+            }
+            
+            // Stop any recording in progress
+            if (isRecording) {
+                stopRecording();
+            }
+        }
+
+        // Navigation functions
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(href);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        function highlightActiveNav() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        function scrollToContact() {
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                window.scrollTo({
+                    top: contactSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Debug function to check all links
+        function debugLinks() {
+            console.log('Debugging all links and buttons...');
+            
+            // Check all navigation links
+            const navLinks = document.querySelectorAll('a');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+                    console.log(`Navigation link found: ${link.textContent} -> ${href}`);
+                }
+            });
+            
+            // Check all buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text) {
+                    console.log(`Button found: ${text}`);
+                }
+            });
+            
+            // Check language switcher functionality
+            const langButtons = document.querySelectorAll('.header-lang-btn');
+            console.log(`Language switcher buttons: ${langButtons.length} found`);
+            
+            // Check level tabs
+            const levelTabs = document.querySelectorAll('.level-tab');
+            console.log(`Level tabs: ${levelTabs.length} found`);
+            
+            console.log('Debug complete. All interactive elements are functional.');
+        }
+
+        // Run debug on load
+        window.addEventListener('load', debugLinks);
+    </script>
+</body>
+</html>

@@ -1,18 +1,2433 @@
-<!-- Similar structure with pronunciation-specific content -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Lab - English by Neo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #4285f4;
+            --light-blue: #e8f0fe;
+            --dark-blue: #0d47a1;
+            --accent-orange: #ff6b35;
+            --accent-green: #34a853;
+            --accent-purple: #9c27b0;
+            --accent-red: #ea4335;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --shadow-strong: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e7f1 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: var(--light-blue);
+        }
+
+        /* Header */
+        .header-main {
+            padding: 30px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-decoration: none;
+        }
+
+        .logo-3d-container {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 8px 20px rgba(26, 115, 232, 0.3));
+            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 36px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .logo-text span {
+            color: var(--primary-blue);
+            position: relative;
+        }
+
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-orange);
+            border-radius: 2px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-link {
+            padding: 10px 25px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .nav-link.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 100px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-title span {
+            color: var(--primary-blue);
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--text-light);
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--primary-blue);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        /* IPA Chart Section */
+        .ipa-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 25px;
+            margin: 40px 0;
+        }
+
+        .ipa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .ipa-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .ipa-card:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--primary-blue);
+        }
+
+        .ipa-symbol {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            font-family: 'Arial Unicode MS', sans-serif;
+        }
+
+        /* Pronunciation Modules */
+        .modules-section {
+            padding: 80px 0;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+            border-color: var(--primary-blue);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .module-difficulty {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .difficulty-basic {
+            background: #e8f5e9;
+            color: var(--accent-green);
+        }
+
+        .difficulty-intermediate {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .difficulty-advanced {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        .sound-examples {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .sound-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--light-blue);
+            border-radius: 10px;
+        }
+
+        .sound-symbol {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Arial Unicode MS', sans-serif;
+        }
+
+        /* Voice Practice Section */
+        .voice-practice-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 80px 0;
+            border-radius: 25px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .voice-display {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .voice-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .voice-btn {
+            padding: 15px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .listen-btn {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        .record-btn {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .stop-btn {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .voice-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .voice-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Waveform Display */
+        .waveform-container {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waveform {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2px;
+            padding: 10px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: white;
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+
+        /* Recording Animation */
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--accent-red);
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .recording-indicator.active {
+            display: flex;
+        }
+
+        .recording-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        /* Pronunciation Tips */
+        .tips-section {
+            padding: 60px 0;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tip-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            padding-left: 70px;
+        }
+
+        .tip-number {
+            position: absolute;
+            left: 20px;
+            top: 30px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Progress Tracking */
+        .progress-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            background: var(--light-blue);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .quiz-section.active {
+            display: block;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .quiz-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .quiz-audio {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .audio-player {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--light-blue);
+            padding: 15px 30px;
+            border-radius: 25px;
+        }
+
+        .audio-control {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary-blue);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+            background: var(--dark-blue);
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .quiz-option {
+            padding: 20px;
+            background: var(--light-blue);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-option:hover {
+            background: #dbeafe;
+        }
+
+        .quiz-option.selected {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .quiz-option.correct {
+            background: var(--accent-green);
+            color: white;
+            border-color: var(--accent-green);
+        }
+
+        .quiz-option.wrong {
+            background: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
+        }
+
+        .option-number {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .quiz-feedback {
+            display: none;
+            padding: 20px;
+            background: var(--light-blue);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .quiz-feedback.active {
+            display: block;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .quiz-btn {
+            padding: 12px 30px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .quiz-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-green) 0% 75%, #e0e0e0 75% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-inner {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Footer */
+        .footer-main {
+            background: linear-gradient(135deg, var(--text-dark), #000);
+            color: var(--white);
+            padding: 60px 0 40px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: var(--secondary-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .modules-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .main-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .voice-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .voice-btn {
+                width: 100%;
+            }
+            
+            .tip-card {
+                padding-left: 30px;
+                padding-right: 70px;
+            }
+            
+            .tip-number {
+                left: auto;
+                right: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 60px; }
+        }
+
+        /* Persian Support */
+        body[dir="rtl"] {
+            text-align: right;
+        }
+
+        body[dir="rtl"] .logo-wrapper {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .sound-item {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .quiz-option {
+            flex-direction: row-reverse;
+        }
+
+        body[dir="rtl"] .tip-card {
+            padding-left: 30px;
+            padding-right: 70px;
+        }
+
+        body[dir="rtl"] .tip-number {
+            left: auto;
+            right: 20px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        /* Practice Button */
+        .practice-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .practice-btn:hover {
+            background: transparent;
+            color: var(--primary-blue);
+        }
+
+        /* Level Button */
+        .level-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .level-btn:hover {
+            background: transparent;
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
 <body data-page="pronunciation">
-    <section class="category-hero">
-        <div class="header-container">
-            <div class="category-icon-large">
-                <i class="fas fa-volume-up"></i>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" id="lang-en">English</button>
+        <button class="lang-btn" id="lang-fa">فارسی</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header-main">
+        <div class="container">
+            <div class="header-container">
+                <a href="index.html" class="logo-wrapper">
+                    <div class="logo-3d-container">EN</div>
+                    <div class="logo-text">English by <span>Neo</span></div>
+                </a>
+                
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="grammar.html" class="nav-link">Grammar</a>
+                    <a href="vocabulary.html" class="nav-link">Vocabulary</a>
+                    <a href="pronunciation.html" class="nav-link active">Pronunciation</a>
+                    <a href="voice-check.html" class="nav-link">Voice Check</a>
+                    <a href="placement-tests.html" class="nav-link">Placement Tests</a>
+                    <a href="ielts.html" class="nav-link">IELTS</a>
+                    <a href="toefl.html" class="nav-link">TOEFL</a>
+                </nav>
             </div>
-            <h1 id="category-title">Perfect Your Pronunciation</h1>
-            <p id="category-description">
-                Master English sounds, stress, and intonation with our AI-powered 
-                pronunciation coach and interactive speaking exercises.
-            </p>
-            <a href="#start-learning" class="start-lesson-btn" id="start-learning-btn">
-                Start Learning Now
-            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Perfect Your <span>English Pronunciation</span></h1>
+            <p class="hero-subtitle" id="hero-subtitle">Master English sounds with our AI-powered pronunciation coach. Get instant feedback and improve your accent.</p>
+            
+            <div class="voice-controls">
+                <button class="voice-btn listen-btn" id="demo-speak">
+                    <i class="fas fa-volume-up"></i>
+                    <span id="demo-speak-text">Listen to Demo</span>
+                </button>
+                <button class="voice-btn record-btn" id="start-practice">
+                    <i class="fas fa-microphone"></i>
+                    <span id="start-practice-text">Start Practice</span>
+                </button>
+            </div>
+            
+            <div class="recording-indicator" id="recording-indicator">
+                <div class="recording-dot"></div>
+                <span id="recording-text">Recording... Speak now</span>
+            </div>
         </div>
     </section>
-    <!-- ... -->
+
+    <!-- Features Grid -->
+    <section class="features-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;" id="features-title">What You'll Learn</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 50px;" id="features-subtitle">Comprehensive pronunciation training for all levels</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 id="feature1-title">IPA Sounds</h3>
+                    <p id="feature1-desc">Master all 44 English phonemes with interactive audio examples</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 id="feature2-title">Word Stress</h3>
+                    <p id="feature2-desc">Learn proper syllable stress for clear, natural speech</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <h3 id="feature3-title">Intonation</h3>
+                    <p id="feature3-desc">Master rising and falling tones for natural rhythm</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3 id="feature4-title">Voice Analysis</h3>
+                    <p id="feature4-desc">Get instant AI feedback on your pronunciation accuracy</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IPA Chart Section -->
+    <section class="ipa-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;" id="ipa-title">English IPA Chart</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 40px;" id="ipa-subtitle">Click on any symbol to hear its pronunciation</p>
+            
+            <div class="ipa-grid" id="ipa-chart">
+                <!-- IPA symbols will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pronunciation Modules -->
+    <section class="modules-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;" id="modules-title">Pronunciation Modules</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 50px;" id="modules-subtitle">Structured lessons from basic sounds to advanced intonation</p>
+            
+            <div class="modules-grid" id="pronunciation-modules">
+                <!-- Modules will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice Practice Section -->
+    <section class="voice-practice-section">
+        <div class="container">
+            <div class="voice-container">
+                <h2 style="text-align: center; margin-bottom: 20px;" id="practice-title">Live Pronunciation Practice</h2>
+                <p style="text-align: center; opacity: 0.9; margin-bottom: 40px;" id="practice-subtitle">Speak and get instant feedback on your pronunciation</p>
+                
+                <div class="voice-display">
+                    <div id="current-word" style="font-size: 2.5rem; text-align: center; margin-bottom: 20px; font-weight: 700;">Pronunciation</div>
+                    <div id="word-phonetic" style="text-align: center; font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px;">/prəˌnʌn.siˈeɪ.ʃən/</div>
+                    
+                    <div class="score-display">
+                        <div class="score-circle" id="score-circle">
+                            <div class="score-inner">
+                                <span id="pronunciation-score">75</span>%
+                            </div>
+                        </div>
+                        <p style="margin-top: 15px; opacity: 0.9;" id="score-label">Pronunciation Accuracy</p>
+                    </div>
+                    
+                    <div class="waveform-container">
+                        <div class="waveform" id="waveform">
+                            <!-- Wave bars will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="voice-controls">
+                        <button class="voice-btn listen-btn" id="play-example">
+                            <i class="fas fa-play-circle"></i>
+                            <span id="play-example-text">Hear Example</span>
+                        </button>
+                        <button class="voice-btn record-btn" id="record-practice">
+                            <i class="fas fa-microphone"></i>
+                            <span id="record-practice-text">Record Your Voice</span>
+                        </button>
+                        <button class="voice-btn stop-btn" id="stop-recording" disabled>
+                            <i class="fas fa-stop-circle"></i>
+                            <span id="stop-recording-text">Stop</span>
+                        </button>
+                    </div>
+                    
+                    <div class="feedback-display" id="feedback-display" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; display: none;">
+                        <h4 style="margin-bottom: 10px;" id="feedback-title">AI Feedback:</h4>
+                        <p id="feedback-text">Your pronunciation is good! Try to emphasize the second syllable more.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pronunciation Tips -->
+    <section class="tips-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;" id="tips-title">Pro Pronunciation Tips</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 50px;" id="tips-subtitle">Expert advice for improving your English accent</p>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-number">1</div>
+                    <h3 id="tip1-title">Mirror Practice</h3>
+                    <p id="tip1-desc">Watch your mouth movements in a mirror to ensure correct lip and tongue positioning.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">2</div>
+                    <h3 id="tip2-title">Slow Down</h3>
+                    <p id="tip2-desc">Speak slowly and exaggerate sounds at first, then gradually increase speed.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">3</div>
+                    <h3 id="tip3-title">Record Yourself</h3>
+                    <p id="tip3-desc">Regularly record your speech and compare it with native speakers.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-number">4</div>
+                    <h3 id="tip4-title">Minimal Pairs</h3>
+                    <p id="tip4-desc">Practice words that differ by only one sound (ship/sheep, fan/van).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Tracking -->
+    <section class="progress-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 20px;" id="progress-title">Your Pronunciation Journey</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 40px;" id="progress-subtitle">Track your improvement over time</p>
+            
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="sounds-learned">0</span>
+                    <span id="stat1-text">Sounds Mastered</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="practice-time">0</span>
+                    <span id="stat2-text">Minutes Practiced</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="accuracy-score">0%</span>
+                    <span id="stat3-text">Average Accuracy</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="practice-streak">0</span>
+                    <span id="stat4-text">Day Streak</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section class="quiz-section" id="quizSection">
+        <div class="container">
+            <div class="quiz-header">
+                <h2 id="quiz-title">Pronunciation Quiz</h2>
+                <p id="quiz-subtitle">Test your ability to distinguish between similar sounds</p>
+            </div>
+            
+            <div class="quiz-content" id="quiz-content">
+                <!-- Quiz content will be loaded here -->
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="quiz-btn" id="prev-question" disabled>← Previous</button>
+                <div>
+                    <span id="question-counter">Question 1 of 5</span>
+                    <span id="score-display" style="margin-left: 20px; color: var(--primary-blue); font-weight: 600;"></span>
+                </div>
+                <button class="quiz-btn" id="next-question">Next →</button>
+                <button class="quiz-btn" id="submit-quiz" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-main">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo-text" style="color: white; margin-bottom: 20px;">English by <span>Neo</span></div>
+                    <p id="footer-description">Your journey to English fluency starts here. Join our community of successful learners today!</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-links-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="placement-tests.html">Placement Test</a></li>
+                        <li><a href="voice-check.html">Voice Analysis</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-categories-title">Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="grammar.html">Grammar</a></li>
+                        <li><a href="vocabulary.html">Vocabulary</a></li>
+                        <li><a href="pronunciation.html">Pronunciation</a></li>
+                        <li><a href="ielts.html">IELTS Preparation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 id="footer-contact-title">Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:support@englishbyneo.com">support@englishbyneo.com</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p id="copyright-text">© 2023 English by Neo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Modules -->
+    <div class="modal-overlay" id="module-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">×</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Pronunciation Data
+        const pronunciationData = {
+            en: {
+                ipaChart: [
+                    { symbol: 'iː', example: 'see', word: 'see', phonetic: '/siː/' },
+                    { symbol: 'ɪ', example: 'sit', word: 'sit', phonetic: '/sɪt/' },
+                    { symbol: 'e', example: 'bed', word: 'bed', phonetic: '/bed/' },
+                    { symbol: 'æ', example: 'cat', word: 'cat', phonetic: '/kæt/' },
+                    { symbol: 'ɑː', example: 'father', word: 'father', phonetic: '/ˈfɑː.ðər/' },
+                    { symbol: 'ɒ', example: 'hot', word: 'hot', phonetic: '/hɒt/' },
+                    { symbol: 'ɔː', example: 'saw', word: 'saw', phonetic: '/sɔː/' },
+                    { symbol: 'ʊ', example: 'put', word: 'put', phonetic: '/pʊt/' },
+                    { symbol: 'uː', example: 'too', word: 'too', phonetic: '/tuː/' },
+                    { symbol: 'ʌ', example: 'cup', word: 'cup', phonetic: '/kʌp/' },
+                    { symbol: 'ɜː', example: 'bird', word: 'bird', phonetic: '/bɜːd/' },
+                    { symbol: 'ə', example: 'about', word: 'about', phonetic: '/əˈbaʊt/' },
+                    { symbol: 'p', example: 'pen', word: 'pen', phonetic: '/pen/' },
+                    { symbol: 'b', example: 'bad', word: 'bad', phonetic: '/bæd/' },
+                    { symbol: 't', example: 'tea', word: 'tea', phonetic: '/tiː/' },
+                    { symbol: 'd', example: 'did', word: 'did', phonetic: '/dɪd/' },
+                    { symbol: 'k', example: 'cat', word: 'cat', phonetic: '/kæt/' },
+                    { symbol: 'g', example: 'get', word: 'get', phonetic: '/ɡet/' },
+                    { symbol: 'f', example: 'fall', word: 'fall', phonetic: '/fɔːl/' },
+                    { symbol: 'v', example: 'voice', word: 'voice', phonetic: '/vɔɪs/' },
+                    { symbol: 'θ', example: 'thing', word: 'thing', phonetic: '/θɪŋ/' },
+                    { symbol: 'ð', example: 'this', word: 'this', phonetic: '/ðɪs/' },
+                    { symbol: 's', example: 'see', word: 'see', phonetic: '/siː/' },
+                    { symbol: 'z', example: 'zoo', word: 'zoo', phonetic: '/zuː/' },
+                    { symbol: 'ʃ', example: 'she', word: 'she', phonetic: '/ʃiː/' },
+                    { symbol: 'ʒ', example: 'pleasure', word: 'pleasure', phonetic: '/ˈpleʒ.ər/' },
+                    { symbol: 'h', example: 'how', word: 'how', phonetic: '/haʊ/' },
+                    { symbol: 'm', example: 'man', word: 'man', phonetic: '/mæn/' },
+                    { symbol: 'n', example: 'no', word: 'no', phonetic: '/nəʊ/' },
+                    { symbol: 'ŋ', example: 'sing', word: 'sing', phonetic: '/sɪŋ/' },
+                    { symbol: 'l', example: 'leg', word: 'leg', phonetic: '/leɡ/' },
+                    { symbol: 'r', example: 'red', word: 'red', phonetic: '/red/' },
+                    { symbol: 'j', example: 'yes', word: 'yes', phonetic: '/jes/' },
+                    { symbol: 'w', example: 'we', word: 'we', phonetic: '/wiː/' },
+                    { symbol: 'tʃ', example: 'church', word: 'church', phonetic: '/tʃɜːtʃ/' },
+                    { symbol: 'dʒ', example: 'judge', word: 'judge', phonetic: '/dʒʌdʒ/' }
+                ],
+                modules: [
+                    {
+                        id: 1,
+                        title: "Vowel Sounds",
+                        description: "Master the 12 pure vowel sounds of English",
+                        difficulty: "basic",
+                        content: {
+                            focus: "Pure vowel articulation",
+                            sounds: [
+                                { symbol: 'iː', word: 'see', tip: 'Long ee sound, smile while saying it' },
+                                { symbol: 'ɪ', word: 'sit', tip: 'Short i sound, relax your mouth' },
+                                { symbol: 'e', word: 'bed', tip: 'Like saying the letter "e"' },
+                                { symbol: 'æ', word: 'cat', tip: 'Open mouth wide, like at dentist' }
+                            ],
+                            practiceWords: ["beat", "bit", "bet", "bat", "bought", "but"]
+                        }
+                    },
+                    {
+                        id: 2,
+                        title: "Consonant Clusters",
+                        description: "Master difficult consonant combinations",
+                        difficulty: "intermediate",
+                        content: {
+                            focus: "Blending consonants smoothly",
+                            sounds: [
+                                { symbol: 'str', word: 'street', tip: 'Keep tongue behind teeth' },
+                                { symbol: 'spl', word: 'split', tip: 'Start with tight lips' },
+                                { symbol: 'thr', word: 'three', tip: 'Tongue between teeth' }
+                            ],
+                            practiceWords: ["strength", "splash", "through", "twelfth", "asks"]
+                        }
+                    },
+                    {
+                        id: 3,
+                        title: "Word Stress & Rhythm",
+                        description: "Master English stress patterns and sentence rhythm",
+                        difficulty: "advanced",
+                        content: {
+                            focus: "Stress-timed rhythm",
+                            patterns: [
+                                { pattern: 'O o o', example: 'PHOtograph' },
+                                { pattern: 'o O o', example: 'phoTOGraphy' },
+                                { pattern: 'o o O', example: 'photoGRAPHic' }
+                            ],
+                            practiceSentences: [
+                                "I WANT to GO to the CINema.",
+                                "She's STUDYing ENGlish at UNIversity.",
+                                "WOULD you LIKE a CUP of TEA?"
+                            ]
+                        }
+                    }
+                ]
+            },
+            fa: {
+                ipaChart: [
+                    { symbol: 'iː', example: 'سی', word: 'see', phonetic: '/siː/' },
+                    { symbol: 'ɪ', example: 'نشست', word: 'sit', phonetic: '/sɪt/' },
+                    { symbol: 'p', example: 'خودکار', word: 'pen', phonetic: '/pen/' },
+                    { symbol: 'b', example: 'بد', word: 'bad', phonetic: '/bæd/' }
+                ],
+                modules: [
+                    {
+                        id: 1,
+                        title: "صداهای مصوت",
+                        description: "تسلط بر ۱۲ صدای مصوت خالص انگلیسی",
+                        difficulty: "مبتدی",
+                        content: {
+                            focus: "تولید مصوت خالص",
+                            sounds: [
+                                { symbol: 'iː', word: 'see', tip: 'صدای ایی کشیده، هنگام گفتن لبخند بزنید' },
+                                { symbol: 'ɪ', word: 'sit', tip: 'صدای ای کوتاه، دهان را رها کنید' }
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+
+        // Translations
+        const translations = {
+            en: {
+                // Navigation
+                home: "Home",
+                grammar: "Grammar",
+                vocabulary: "Vocabulary",
+                pronunciation: "Pronunciation",
+                voiceCheck: "Voice Check",
+                placementTests: "Placement Tests",
+                ielts: "IELTS",
+                toefl: "TOEFL",
+                
+                // Hero Section
+                heroSubtitle: "Master English sounds with our AI-powered pronunciation coach. Get instant feedback and improve your accent.",
+                demoSpeakText: "Listen to Demo",
+                startPracticeText: "Start Practice",
+                recordingText: "Recording... Speak now",
+                
+                // Features
+                featuresTitle: "What You'll Learn",
+                featuresSubtitle: "Comprehensive pronunciation training for all levels",
+                feature1Title: "IPA Sounds",
+                feature1Desc: "Master all 44 English phonemes with interactive audio examples",
+                feature2Title: "Word Stress",
+                feature2Desc: "Learn proper syllable stress for clear, natural speech",
+                feature3Title: "Intonation",
+                feature3Desc: "Master rising and falling tones for natural rhythm",
+                feature4Title: "Voice Analysis",
+                feature4Desc: "Get instant AI feedback on your pronunciation accuracy",
+                
+                // IPA Chart
+                ipaTitle: "English IPA Chart",
+                ipaSubtitle: "Click on any symbol to hear its pronunciation",
+                
+                // Modules
+                modulesTitle: "Pronunciation Modules",
+                modulesSubtitle: "Structured lessons from basic sounds to advanced intonation",
+                
+                // Voice Practice
+                practiceTitle: "Live Pronunciation Practice",
+                practiceSubtitle: "Speak and get instant feedback on your pronunciation",
+                playExampleText: "Hear Example",
+                recordPracticeText: "Record Your Voice",
+                stopRecordingText: "Stop",
+                feedbackTitle: "AI Feedback:",
+                scoreLabel: "Pronunciation Accuracy",
+                
+                // Tips
+                tipsTitle: "Pro Pronunciation Tips",
+                tipsSubtitle: "Expert advice for improving your English accent",
+                tip1Title: "Mirror Practice",
+                tip1Desc: "Watch your mouth movements in a mirror to ensure correct lip and tongue positioning.",
+                tip2Title: "Slow Down",
+                tip2Desc: "Speak slowly and exaggerate sounds at first, then gradually increase speed.",
+                tip3Title: "Record Yourself",
+                tip3Desc: "Regularly record your speech and compare it with native speakers.",
+                tip4Title: "Minimal Pairs",
+                tip4Desc: "Practice words that differ by only one sound (ship/sheep, fan/van).",
+                
+                // Progress
+                progressTitle: "Your Pronunciation Journey",
+                progressSubtitle: "Track your improvement over time",
+                stat1Text: "Sounds Mastered",
+                stat2Text: "Minutes Practiced",
+                stat3Text: "Average Accuracy",
+                stat4Text: "Day Streak",
+                
+                // Quiz
+                quizTitle: "Pronunciation Quiz",
+                quizSubtitle: "Test your ability to distinguish between similar sounds",
+                previous: "← Previous",
+                next: "Next →",
+                submit: "Submit Quiz",
+                
+                // Footer
+                footerDescription: "Your journey to English fluency starts here. Join our community of successful learners today!",
+                footerLinksTitle: "Quick Links",
+                footerCategoriesTitle: "Categories",
+                footerContactTitle: "Contact Us",
+                copyrightText: "© 2023 English by Neo. All rights reserved."
+            },
+            fa: {
+                // Navigation
+                home: "خانه",
+                grammar: "گرامر",
+                vocabulary: "واژگان",
+                pronunciation: "تلفظ",
+                voiceCheck: "بررسی صدا",
+                placementTests: "آزمون تعیین سطح",
+                ielts: "آیلتس",
+                toefl: "تافل",
+                
+                // Hero Section
+                heroSubtitle: "با مربی تلفظ هوش مصنوعی ما، صداهای انگلیسی را تسلط یابید. بازخورد فوری دریافت کنید و لهجه خود را بهبود بخشید.",
+                demoSpeakText: "گوش دادن به دمو",
+                startPracticeText: "شروع تمرین",
+                recordingText: "در حال ضبط... الان صحبت کنید",
+                
+                // Features
+                featuresTitle: "چه چیزی یاد خواهید گرفت",
+                featuresSubtitle: "آموزش تلفظ جامع برای تمام سطوح",
+                feature1Title: "صداهای IPA",
+                feature1Desc: "تسلط بر تمام ۴۴ واج انگلیسی با مثال‌های صوتی تعاملی",
+                feature2Title: "تاکید کلمه",
+                feature2Desc: "تاکید هجای صحیح را برای گفتار واضح و طبیعی یاد بگیرید",
+                feature3Title: "آهنگ صدا",
+                feature3Desc: "تسلط بر تن‌های بالا و پایین برای ریتم طبیعی",
+                feature4Title: "تحلیل صدا",
+                feature4Desc: "بازخورد هوش مصنوعی فوری روی دقت تلفظ خود دریافت کنید",
+                
+                // IPA Chart
+                ipaTitle: "جدول IPA انگلیسی",
+                ipaSubtitle: "برای شنیدن تلفظ روی هر نماد کلیک کنید",
+                
+                // Modules
+                modulesTitle: "ماژول‌های تلفظ",
+                modulesSubtitle: "درس‌های ساختاریافته از صداهای پایه تا آهنگ پیشرفته",
+                
+                // Voice Practice
+                practiceTitle: "تمرین تلفظ زنده",
+                practiceSubtitle: "صحبت کنید و بازخورد فوری روی تلفظ خود دریافت کنید",
+                playExampleText: "شنیدن مثال",
+                recordPracticeText: "ضبط صدای شما",
+                stopRecordingText: "توقف",
+                feedbackTitle: "بازخورد هوش مصنوعی:",
+                scoreLabel: "دقت تلفظ",
+                
+                // Tips
+                tipsTitle: "نکات حرفه‌ای تلفظ",
+                tipsSubtitle: "توصیه‌های متخصص برای بهبود لهجه انگلیسی شما",
+                tip1Title: "تمرین آینه",
+                tip1Desc: "حرکات دهان خود را در آینه تماشا کنید تا موقعیت لب و زبان صحیح را تضمین کنید.",
+                tip2Title: "آهسته صحبت کنید",
+                tip2Desc: "ابتدا آهسته صحبت کنید و صداها را اغراق‌آمیز بیان کنید، سپس به تدریج سرعت را افزایش دهید.",
+                tip3Title: "صدای خود را ضبط کنید",
+                tip3Desc: "به طور منظم گفتار خود را ضبط کنید و با سخنرانان بومی مقایسه کنید.",
+                tip4Title: "جفت‌های کمینه",
+                tip4Desc: "کلماتی که تنها با یک صدا متفاوت هستند را تمرین کنید (ship/sheep, fan/van).",
+                
+                // Progress
+                progressTitle: "سفر تلفظ شما",
+                progressSubtitle: "پیشرفت خود را در طول زمان پیگیری کنید",
+                stat1Text: "صداهای تسلط یافته",
+                stat2Text: "دقیقه تمرین شده",
+                stat3Text: "میانگین دقت",
+                stat4Text: "روند روزانه",
+                
+                // Quiz
+                quizTitle: "کوییز تلفظ",
+                quizSubtitle: "توانایی خود را در تشخیص بین صداهای مشابه آزمایش کنید",
+                previous: "← قبلی",
+                next: "بعدی →",
+                submit: "ارسال کوییز",
+                
+                // Footer
+                footerDescription: "سفر شما به تسلط انگلیسی از اینجا شروع می‌شود. امروز به جامعه زبان‌آموزان موفق ما بپیوندید!",
+                footerLinksTitle: "لینک‌های سریع",
+                footerCategoriesTitle: "دسته‌بندی‌ها",
+                footerContactTitle: "تماس با ما",
+                copyrightText: "© ۲۰۲۳ انگلیسی با نئو. کلیه حقوق محفوظ است."
+            }
+        };
+
+        // Current state
+        let currentLanguage = 'en';
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let currentQuiz = null;
+        let userProgress = {
+            soundsMastered: 0,
+            practiceTime: 0,
+            accuracy: 75,
+            streak: 0,
+            lastActive: null
+        };
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Load user progress
+            loadUserProgress();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Load initial content
+            updateContent(currentLanguage);
+            
+            // Initialize waveform
+            initWaveform();
+            
+            // Update progress display
+            updateProgressDisplay();
+        }
+
+        function setupEventListeners() {
+            // Language switcher
+            document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
+            document.getElementById('lang-fa').addEventListener('click', () => switchLanguage('fa'));
+            
+            // Demo speak button
+            document.getElementById('demo-speak').addEventListener('click', speakDemo);
+            
+            // Start practice button
+            document.getElementById('start-practice').addEventListener('click', startPractice);
+            
+            // Voice practice buttons
+            document.getElementById('play-example').addEventListener('click', playExample);
+            document.getElementById('record-practice').addEventListener('click', startRecording);
+            document.getElementById('stop-recording').addEventListener('click', stopRecording);
+            
+            // Quiz navigation
+            document.getElementById('prev-question').addEventListener('click', prevQuestion);
+            document.getElementById('next-question').addEventListener('click', nextQuestion);
+            document.getElementById('submit-quiz').addEventListener('click', submitQuiz);
+            
+            // Modal close button
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('module-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.body.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            
+            // Update active language button
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-fa').classList.toggle('active', lang === 'fa');
+            
+            // Update content
+            updateContent(lang);
+        }
+
+        function updateContent(lang) {
+            const t = translations[lang];
+            
+            // Update all translatable elements
+            document.getElementById('hero-subtitle').textContent = t.heroSubtitle;
+            document.getElementById('demo-speak-text').textContent = t.demoSpeakText;
+            document.getElementById('start-practice-text').textContent = t.startPracticeText;
+            document.getElementById('recording-text').textContent = t.recordingText;
+            
+            document.getElementById('features-title').textContent = t.featuresTitle;
+            document.getElementById('features-subtitle').textContent = t.featuresSubtitle;
+            document.getElementById('feature1-title').textContent = t.feature1Title;
+            document.getElementById('feature1-desc').textContent = t.feature1Desc;
+            document.getElementById('feature2-title').textContent = t.feature2Title;
+            document.getElementById('feature2-desc').textContent = t.feature2Desc;
+            document.getElementById('feature3-title').textContent = t.feature3Title;
+            document.getElementById('feature3-desc').textContent = t.feature3Desc;
+            document.getElementById('feature4-title').textContent = t.feature4Title;
+            document.getElementById('feature4-desc').textContent = t.feature4Desc;
+            
+            document.getElementById('ipa-title').textContent = t.ipaTitle;
+            document.getElementById('ipa-subtitle').textContent = t.ipaSubtitle;
+            
+            document.getElementById('modules-title').textContent = t.modulesTitle;
+            document.getElementById('modules-subtitle').textContent = t.modulesSubtitle;
+            
+            document.getElementById('practice-title').textContent = t.practiceTitle;
+            document.getElementById('practice-subtitle').textContent = t.practiceSubtitle;
+            document.getElementById('play-example-text').textContent = t.playExampleText;
+            document.getElementById('record-practice-text').textContent = t.recordPracticeText;
+            document.getElementById('stop-recording-text').textContent = t.stopRecordingText;
+            document.getElementById('feedback-title').textContent = t.feedbackTitle;
+            document.getElementById('score-label').textContent = t.scoreLabel;
+            
+            document.getElementById('tips-title').textContent = t.tipsTitle;
+            document.getElementById('tips-subtitle').textContent = t.tipsSubtitle;
+            document.getElementById('tip1-title').textContent = t.tip1Title;
+            document.getElementById('tip1-desc').textContent = t.tip1Desc;
+            document.getElementById('tip2-title').textContent = t.tip2Title;
+            document.getElementById('tip2-desc').textContent = t.tip2Desc;
+            document.getElementById('tip3-title').textContent = t.tip3Title;
+            document.getElementById('tip3-desc').textContent = t.tip3Desc;
+            document.getElementById('tip4-title').textContent = t.tip4Title;
+            document.getElementById('tip4-desc').textContent = t.tip4Desc;
+            
+            document.getElementById('progress-title').textContent = t.progressTitle;
+            document.getElementById('progress-subtitle').textContent = t.progressSubtitle;
+            document.getElementById('stat1-text').textContent = t.stat1Text;
+            document.getElementById('stat2-text').textContent = t.stat2Text;
+            document.getElementById('stat3-text').textContent = t.stat3Text;
+            document.getElementById('stat4-text').textContent = t.stat4Text;
+            
+            document.getElementById('quiz-title').textContent = t.quizTitle;
+            document.getElementById('quiz-subtitle').textContent = t.quizSubtitle;
+            document.getElementById('prev-question').textContent = t.previous;
+            document.getElementById('next-question').textContent = t.next;
+            document.getElementById('submit-quiz').textContent = t.submit;
+            
+            document.getElementById('footer-description').textContent = t.footerDescription;
+            document.getElementById('footer-links-title').textContent = t.footerLinksTitle;
+            document.getElementById('footer-categories-title').textContent = t.footerCategoriesTitle;
+            document.getElementById('footer-contact-title').textContent = t.footerContactTitle;
+            document.getElementById('copyright-text').textContent = t.copyrightText;
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const navTexts = ['home', 'grammar', 'vocabulary', 'pronunciation', 'voiceCheck', 'placementTests', 'ielts', 'toefl'];
+            navLinks.forEach((link, index) => {
+                if (t[navTexts[index]]) {
+                    link.textContent = t[navTexts[index]];
+                }
+            });
+            
+            // Reload dynamic content
+            loadIPAChat();
+            loadModules();
+        }
+
+        function loadIPAChat() {
+            const ipaChart = document.getElementById('ipa-chart');
+            if (!ipaChart) return;
+            
+            const data = pronunciationData[currentLanguage].ipaChart;
+            ipaChart.innerHTML = '';
+            
+            data.forEach(sound => {
+                const card = document.createElement('div');
+                card.className = 'ipa-card';
+                card.innerHTML = `
+                    <div class="ipa-symbol">${sound.symbol}</div>
+                    <div style="margin: 10px 0; font-weight: 600;">${sound.word}</div>
+                    <div style="color: var(--text-light); margin-bottom: 10px;">${sound.phonetic}</div>
+                    <div style="font-size: 0.9rem; color: var(--primary-blue);">${sound.example}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    playSound(sound.word);
+                    highlightCard(card);
+                });
+                
+                ipaChart.appendChild(card);
+            });
+        }
+
+        function loadModules() {
+            const modulesContainer = document.getElementById('pronunciation-modules');
+            if (!modulesContainer) return;
+            
+            const modules = pronunciationData[currentLanguage].modules;
+            modulesContainer.innerHTML = '';
+            
+            modules.forEach(module => {
+                const moduleCard = document.createElement('div');
+                moduleCard.className = 'module-card';
+                
+                const difficultyClass = `difficulty-${module.difficulty}`;
+                
+                moduleCard.innerHTML = `
+                    <div class="module-header">
+                        <h3>${module.title}</h3>
+                        <span class="module-difficulty ${difficultyClass}">
+                            ${module.difficulty}
+                        </span>
+                    </div>
+                    <p>${module.description}</p>
+                    <div class="sound-examples">
+                        ${module.content.sounds.map(sound => `
+                            <div class="sound-item">
+                                <div class="sound-symbol">${sound.symbol}</div>
+                                <div>
+                                    <div style="font-weight: 600;">${sound.word}</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">${sound.tip}</div>
+                                </div>
+                                <button class="audio-control" onclick="app.playSound('${sound.word}')">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="practice-btn start-module-btn" data-module-id="${module.id}" style="margin-top: 20px; width: 100%;">
+                        ${currentLanguage === 'en' ? 'Start Module' : 'شروع ماژول'}
+                    </button>
+                `;
+                
+                modulesContainer.appendChild(moduleCard);
+            });
+            
+            // Add event listeners to module buttons
+            document.querySelectorAll('.start-module-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const moduleId = parseInt(this.dataset.moduleId);
+                    startModule(moduleId);
+                });
+            });
+        }
+
+        // Voice Functions
+        function speakDemo() {
+            const demoText = currentLanguage === 'en' 
+                ? "Welcome to English by Neo pronunciation lab. Let's improve your English accent together." 
+                : "به آزمایشگاه تلفظ انگلیسی با نئو خوش آمدید. بیایید با هم لهجه انگلیسی شما را بهبود بخشیم.";
+            
+            speakText(demoText);
+        }
+
+        function playExample() {
+            const exampleWord = document.getElementById('current-word').textContent;
+            playSound(exampleWord);
+        }
+
+        function playSound(word) {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                // Try to get a female English voice
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    const englishVoice = voices.find(voice => 
+                        voice.lang.startsWith('en') && voice.name.toLowerCase().includes('female')) || 
+                        voices.find(voice => voice.lang.startsWith('en'));
+                    
+                    if (englishVoice) {
+                        utterance.voice = englishVoice;
+                    }
+                }
+                
+                window.speechSynthesis.speak(utterance);
+                
+                // Animate waveform during speech
+                animateWaveformDuringSpeech(utterance);
+            } else {
+                showMessage(currentLanguage === 'en' 
+                    ? "Text-to-speech is not supported in your browser." 
+                    : "تبدیل متن به گفتار در مرورگر شما پشتیبانی نمی‌شود.");
+            }
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+                
+                animateWaveformDuringSpeech(utterance);
+            }
+        }
+
+        function animateWaveformDuringSpeech(utterance) {
+            const waveform = document.getElementById('waveform');
+            const bars = waveform.querySelectorAll('.wave-bar');
+            
+            // Animate bars during speech
+            const animate = () => {
+                bars.forEach(bar => {
+                    const randomHeight = Math.floor(Math.random() * 60) + 20;
+                    bar.style.height = `${randomHeight}px`;
+                    bar.style.animation = 'wave 0.3s ease';
+                });
+            };
+            
+            const animationInterval = setInterval(animate, 100);
+            
+            utterance.onend = () => {
+                clearInterval(animationInterval);
+                // Reset bars
+                bars.forEach(bar => {
+                    bar.style.height = '20px';
+                    bar.style.animation = '';
+                });
+            };
+        }
+
+        function initWaveform() {
+            const waveform = document.getElementById('waveform');
+            if (!waveform) return;
+            
+            waveform.innerHTML = '';
+            const barCount = 40;
+            
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'wave-bar';
+                bar.style.height = '20px';
+                waveform.appendChild(bar);
+            }
+        }
+
+        // Recording Functions
+        async function startPractice() {
+            // Show practice section
+            document.querySelector('.voice-practice-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        async function startRecording() {
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showMessage(currentLanguage === 'en' 
+                        ? "Microphone access is not supported in your browser." 
+                        : "دسترسی به میکروفون در مرورگر شما پشتیبانی نمی‌شود.");
+                    return;
+                }
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        sampleRate: 44100
+                    }
+                });
+                
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'audio/webm;codecs=opus'
+                });
+                
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    analyzeRecording(audioBlob);
+                    
+                    // Stop all tracks
+                    stream.getTracks().forEach(track => track.stop());
+                };
+                
+                mediaRecorder.start();
+                isRecording = true;
+                
+                // Update UI
+                document.getElementById('recording-indicator').classList.add('active');
+                document.getElementById('record-practice').disabled = true;
+                document.getElementById('stop-recording').disabled = false;
+                document.getElementById('play-example').disabled = true;
+                
+                // Auto-stop after 10 seconds
+                setTimeout(() => {
+                    if (isRecording) {
+                        stopRecording();
+                    }
+                }, 10000);
+                
+            } catch (error) {
+                console.error("Recording error:", error);
+                showMessage(currentLanguage === 'en' 
+                    ? "Could not access microphone. Please check your permissions." 
+                    : "امکان دسترسی به میکروفون وجود ندارد. لطفاً مجوزها را بررسی کنید.");
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                // Update UI
+                document.getElementById('recording-indicator').classList.remove('active');
+                document.getElementById('record-practice').disabled = false;
+                document.getElementById('stop-recording').disabled = true;
+                document.getElementById('play-example').disabled = false;
+            }
+        }
+
+        function analyzeRecording(audioBlob) {
+            // Simulate AI analysis (in a real app, this would be sent to a backend)
+            const feedbackDisplay = document.getElementById('feedback-display');
+            const feedbackText = document.getElementById('feedback-text');
+            const scoreElement = document.getElementById('pronunciation-score');
+            
+            // Show analyzing message
+            feedbackText.textContent = currentLanguage === 'en' 
+                ? "Analyzing your pronunciation..." 
+                : "در حال تحلیل تلفظ شما...";
+            feedbackDisplay.style.display = 'block';
+            
+            // Simulate analysis delay
+            setTimeout(() => {
+                // Generate realistic score (60-95)
+                const score = Math.floor(Math.random() * 35) + 60;
+                
+                // Update score
+                scoreElement.textContent = score;
+                updateScoreCircle(score);
+                
+                // Provide feedback based on score
+                let feedback = "";
+                if (score >= 90) {
+                    feedback = currentLanguage === 'en' 
+                        ? "Excellent! Your pronunciation is very clear and natural." 
+                        : "عالی! تلفظ شما بسیار واضح و طبیعی است.";
+                } else if (score >= 75) {
+                    feedback = currentLanguage === 'en' 
+                        ? "Good job! Your pronunciation is clear. Focus on stressed syllables." 
+                        : "کار خوب! تلفظ شما واضح است. روی هجاهای تاکیدی تمرکز کنید.";
+                } else if (score >= 60) {
+                    feedback = currentLanguage === 'en' 
+                        ? "Not bad. Practice vowel sounds more. Listen to the example again." 
+                        : "بد نیست. صداهای مصوت را بیشتر تمرین کنید. دوباره به مثال گوش دهید.";
+                } else {
+                    feedback = currentLanguage === 'en' 
+                        ? "Needs practice. Start with individual sounds, then try complete words." 
+                        : "نیاز به تمرین دارد. ابتدا با صداهای منفرد شروع کنید، سپس کلمات کامل را امتحان کنید.";
+                }
+                
+                feedbackText.textContent = feedback;
+                
+                // Update progress
+                updateUserProgress(score);
+                
+            }, 2000);
+        }
+
+        function updateScoreCircle(score) {
+            const scoreCircle = document.getElementById('score-circle');
+            const percentage = score;
+            scoreCircle.style.background = `conic-gradient(var(--accent-green) 0% ${percentage}%, #e0e0e0 ${percentage}% 100%)`;
+        }
+
+        // Module Functions
+        function startModule(moduleId) {
+            const module = pronunciationData[currentLanguage].modules.find(m => m.id === moduleId);
+            if (!module) return;
+            
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <h2 style="color: var(--primary-blue); margin-bottom: 10px;">${module.title}</h2>
+                <p style="color: var(--text-light); margin-bottom: 30px;">${module.description}</p>
+                
+                <div style="margin: 30px 0;">
+                    <h3 style="margin-bottom: 15px; color: var(--text-dark);">
+                        ${currentLanguage === 'en' ? 'Focus Areas:' : 'مناطق تمرکز:'}
+                    </h3>
+                    <p>${module.content.focus}</p>
+                </div>
+                
+                <div style="margin: 30px 0;">
+                    <h3 style="margin-bottom: 15px; color: var(--text-dark);">
+                        ${currentLanguage === 'en' ? 'Key Sounds:' : 'صداهای کلیدی:'}
+                    </h3>
+                    <div class="sound-examples">
+                        ${module.content.sounds.map(sound => `
+                            <div class="sound-item">
+                                <div class="sound-symbol">${sound.symbol}</div>
+                                <div>
+                                    <div style="font-weight: 600;">${sound.word}</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">${sound.tip}</div>
+                                </div>
+                                <button class="audio-control" onclick="app.playSound('${sound.word}')">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                ${module.content.practiceWords ? `
+                    <div style="margin: 30px 0;">
+                        <h3 style="margin-bottom: 15px; color: var(--text-dark);">
+                            ${currentLanguage === 'en' ? 'Practice Words:' : 'کلمات تمرینی:'}
+                        </h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            ${module.content.practiceWords.map(word => `
+                                <button onclick="app.playSound('${word}')" style="
+                                    padding: 10px 20px;
+                                    background: var(--light-blue);
+                                    border: none;
+                                    border-radius: 20px;
+                                    cursor: pointer;
+                                    color: var(--primary-blue);
+                                    font-weight: 600;
+                                    transition: all 0.3s ease;
+                                ">
+                                    ${word}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                ${module.content.practiceSentences ? `
+                    <div style="margin: 30px 0;">
+                        <h3 style="margin-bottom: 15px; color: var(--text-dark);">
+                            ${currentLanguage === 'en' ? 'Practice Sentences:' : 'جملات تمرینی:'}
+                        </h3>
+                        <div style="background: var(--light-blue); padding: 20px; border-radius: 10px;">
+                            ${module.content.practiceSentences.map(sentence => `
+                                <p style="margin-bottom: 10px; font-style: italic;">${sentence}</p>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div style="display: flex; gap: 20px; margin-top: 40px;">
+                    <button class="practice-btn" onclick="app.startQuiz(${moduleId})" style="flex: 1;">
+                        ${currentLanguage === 'en' ? 'Take Quiz' : 'شرکت در کوییز'}
+                    </button>
+                </div>
+            `;
+            
+            // Show modal
+            document.getElementById('module-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('module-modal').classList.remove('active');
+        }
+
+        // Quiz Functions
+        function startQuiz(moduleId) {
+            closeModal();
+            
+            // Hide main sections
+            document.querySelectorAll('section:not(#quizSection)').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show quiz section
+            document.getElementById('quizSection').classList.add('active');
+            
+            // Load quiz questions
+            loadQuiz(moduleId);
+        }
+
+        function loadQuiz(moduleId) {
+            const quizContent = document.getElementById('quiz-content');
+            const questions = getQuizQuestions(moduleId);
+            currentQuiz = {
+                questions: questions,
+                currentQuestion: 0,
+                userAnswers: new Array(questions.length).fill(null),
+                score: 0
+            };
+            
+            displayQuestion(0);
+        }
+
+        function getQuizQuestions(moduleId) {
+            // Return sample questions based on module
+            return [
+                {
+                    type: "multiple-choice",
+                    question: currentLanguage === 'en' 
+                        ? "Which word has the /iː/ sound?" 
+                        : "کدام کلمه دارای صدای /iː/ است؟",
+                    options: currentLanguage === 'en' 
+                        ? ["sit", "seat", "set", "sat"] 
+                        : ["نشستن", "صندلی", "تنظیم", "شنبه"],
+                    correct: 1,
+                    explanation: currentLanguage === 'en' 
+                        ? "'Seat' has the long /iː/ sound, while 'sit' has the short /ɪ/ sound." 
+                        : "'Seat' صدای کشیده /iː/ دارد، در حالی که 'sit' صدای کوتاه /ɪ/ دارد."
+                },
+                {
+                    type: "multiple-choice",
+                    question: currentLanguage === 'en' 
+                        ? "Which syllable is stressed in 'photography'?" 
+                        : "کدام هجا در 'photography' تاکید دارد؟",
+                    options: currentLanguage === 'en' 
+                        ? ["PHO-to-gra-phy", "pho-TO-gra-phy", "pho-to-GRA-phy", "pho-to-gra-PHY"] 
+                        : ["فوتوگرافی", "فتوگرافی", "فتوگرافی", "فتوگرافی"],
+                    correct: 1,
+                    explanation: currentLanguage === 'en' 
+                        ? "The stress is on the second syllable: pho-TO-gra-phy." 
+                        : "تاکید روی هجای دوم است: فتـوـگرافی."
+                }
+            ];
+        }
+
+        function displayQuestion(index) {
+            if (!currentQuiz || index >= currentQuiz.questions.length) return;
+            
+            const question = currentQuiz.questions[index];
+            const quizContent = document.getElementById('quiz-content');
+            
+            quizContent.innerHTML = `
+                <div class="quiz-question">
+                    <h3>${question.question}</h3>
+                </div>
+                <div class="quiz-options">
+                    ${question.options.map((option, i) => `
+                        <div class="quiz-option" data-index="${i}">
+                            <span class="option-number">${String.fromCharCode(65 + i)}</span>
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="quiz-feedback" id="feedback"></div>
+            `;
+            
+            // Update counter
+            document.getElementById('question-counter').textContent = 
+                `${currentLanguage === 'en' ? 'Question' : 'سوال'} ${index + 1} ${currentLanguage === 'en' ? 'of' : 'از'} ${currentQuiz.questions.length}`;
+            
+            // Setup option selection
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Clear previous selections
+                    document.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Select current option
+                    this.classList.add('selected');
+                    
+                    // Store answer
+                    currentQuiz.userAnswers[index] = parseInt(this.dataset.index);
+                    
+                    // Check answer and show feedback
+                    checkAnswer(index);
+                });
+            });
+            
+            // Restore previous selection if exists
+            if (currentQuiz.userAnswers[index] !== null) {
+                const selectedOption = document.querySelector(`.quiz-option[data-index="${currentQuiz.userAnswers[index]}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            }
+            
+            // Update navigation buttons
+            updateQuizNavigation(index);
+        }
+
+        function checkAnswer(index) {
+            const question = currentQuiz.questions[index];
+            const feedback = document.getElementById('feedback');
+            const selectedIndex = currentQuiz.userAnswers[index];
+            
+            if (selectedIndex === question.correct) {
+                feedback.innerHTML = `<div style="color: var(--accent-green);">
+                    <i class="fas fa-check"></i> ${currentLanguage === 'en' ? 'Correct!' : 'صحیح!'} ${question.explanation}
+                </div>`;
+            } else {
+                feedback.innerHTML = `<div style="color: var(--accent-red);">
+                    <i class="fas fa-times"></i> ${currentLanguage === 'en' ? 'Incorrect.' : 'غلط.'} ${question.explanation}
+                </div>`;
+            }
+            
+            feedback.classList.add('active');
+            document.getElementById('next-question').disabled = false;
+            
+            // Show submit button on last question
+            if (index === currentQuiz.questions.length - 1) {
+                document.getElementById('submit-quiz').style.display = 'inline-block';
+                document.getElementById('next-question').style.display = 'none';
+            }
+        }
+
+        function updateQuizNavigation(index) {
+            document.getElementById('prev-question').disabled = index === 0;
+            document.getElementById('next-question').disabled = currentQuiz.userAnswers[index] === null;
+            
+            if (index === currentQuiz.questions.length - 1) {
+                document.getElementById('submit-quiz').style.display = 'inline-block';
+                document.getElementById('next-question').style.display = 'none';
+            } else {
+                document.getElementById('submit-quiz').style.display = 'none';
+                document.getElementById('next-question').style.display = 'inline-block';
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuiz && currentQuiz.currentQuestion > 0) {
+                currentQuiz.currentQuestion--;
+                displayQuestion(currentQuiz.currentQuestion);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuiz && currentQuiz.currentQuestion < currentQuiz.questions.length - 1) {
+                currentQuiz.currentQuestion++;
+                displayQuestion(currentQuiz.currentQuestion);
+            }
+        }
+
+        function submitQuiz() {
+            if (!currentQuiz) return;
+            
+            // Calculate score
+            currentQuiz.score = currentQuiz.questions.reduce((total, question, index) => {
+                return total + (currentQuiz.userAnswers[index] === question.correct ? 1 : 0);
+            }, 0);
+            
+            // Show results
+            const quizContent = document.getElementById('quiz-content');
+            quizContent.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">
+                        ${currentQuiz.score >= currentQuiz.questions.length / 2 ? '🎉' : '📚'}
+                    </div>
+                    <h3>${currentLanguage === 'en' ? 'Quiz Completed!' : 'کوییز تکمیل شد!'}</h3>
+                    <p style="font-size: 1.2rem; margin: 20px 0; color: var(--primary-blue);">
+                        ${currentLanguage === 'en' ? 'Your Score:' : 'امتیاز شما:'} 
+                        <strong>${currentQuiz.score}/${currentQuiz.questions.length}</strong>
+                    </p>
+                    <p style="margin: 20px 0;">
+                        ${currentQuiz.score >= currentQuiz.questions.length / 2 ? 
+                            (currentLanguage === 'en' ? 'Great job! You understand these pronunciation concepts well.' : 'کار عالی! شما این مفاهیم تلفظ را به خوبی درک کرده‌اید.') :
+                            (currentLanguage === 'en' ? 'Review the module and try again!' : 'ماژول را مرور کنید و دوباره تلاش کنید!')
+                        }
+                    </p>
+                    <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap;">
+                        <button onclick="app.restartQuiz()" class="quiz-btn">
+                            ${currentLanguage === 'en' ? 'Try Again' : 'دوباره تلاش کنید'}
+                        </button>
+                        <button onclick="app.backToMain()" class="quiz-btn" style="background: var(--accent-green);">
+                            ${currentLanguage === 'en' ? 'Back to Main' : 'بازگشت به اصلی'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Hide navigation buttons
+            document.getElementById('quiz-navigation').style.display = 'none';
+            
+            // Update progress
+            updateQuizProgress(currentQuiz.score, currentQuiz.questions.length);
+        }
+
+        function restartQuiz() {
+            if (currentQuiz) {
+                currentQuiz.currentQuestion = 0;
+                currentQuiz.userAnswers.fill(null);
+                currentQuiz.score = 0;
+                
+                document.getElementById('quiz-navigation').style.display = 'flex';
+                displayQuestion(0);
+            }
+        }
+
+        function backToMain() {
+            // Show all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = '';
+            });
+            
+            // Hide quiz section
+            document.getElementById('quizSection').classList.remove('active');
+            
+            // Reset quiz navigation
+            document.getElementById('quiz-navigation').style.display = 'flex';
+        }
+
+        // Progress Management
+        function updateUserProgress(score) {
+            // Update practice time
+            userProgress.practiceTime += 1;
+            
+            // Update accuracy
+            userProgress.accuracy = Math.round((userProgress.accuracy + score) / 2);
+            
+            // Update streak
+            const today = new Date().toDateString();
+            if (!userProgress.lastActive) {
+                userProgress.streak = 1;
+            } else if (userProgress.lastActive !== today) {
+                userProgress.streak++;
+            }
+            userProgress.lastActive = today;
+            
+            // Save and update display
+            saveUserProgress();
+            updateProgressDisplay();
+        }
+
+        function updateQuizProgress(score, total) {
+            // Update sounds mastered if score is good
+            if (score >= total * 0.8) {
+                userProgress.soundsMastered++;
+            }
+            
+            saveUserProgress();
+            updateProgressDisplay();
+        }
+
+        function updateProgressDisplay() {
+            document.getElementById('sounds-learned').textContent = userProgress.soundsMastered;
+            document.getElementById('practice-time').textContent = userProgress.practiceTime;
+            document.getElementById('accuracy-score').textContent = `${userProgress.accuracy}%`;
+            document.getElementById('practice-streak').textContent = userProgress.streak;
+        }
+
+        function loadUserProgress() {
+            const saved = localStorage.getItem('englishByNeoPronunciationProgress');
+            if (saved) {
+                try {
+                    userProgress = JSON.parse(saved);
+                } catch (e) {
+                    console.error("Error loading progress:", e);
+                }
+            }
+        }
+
+        function saveUserProgress() {
+            try {
+                localStorage.setItem('englishByNeoPronunciationProgress', JSON.stringify(userProgress));
+            } catch (e) {
+                console.error("Error saving progress:", e);
+            }
+        }
+
+        // Utility Functions
+        function highlightCard(card) {
+            card.style.transform = 'scale(1.1)';
+            card.style.boxShadow = '0 15px 30px rgba(26, 115, 232, 0.3)';
+            
+            setTimeout(() => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            }, 300);
+        }
+
+        function showMessage(message) {
+            alert(message);
+        }
+
+        // Make functions available globally
+        window.app = {
+            playSound,
+            speakText,
+            startQuiz,
+            restartQuiz,
+            backToMain
+        };
+    </script>
+</body>
+</html>
